@@ -766,215 +766,43 @@
 
   <script>
     $(document).ready(function () {
-      $('.telepon').inputmask('9999-9999-9999');
-    });
+      // Ketika opsi yang dipilih berubah
+      $('#inputIdPelanggan').change(function () {
+        var idPelanggan = $(this).val(); // Ambil nilai opsi yang dipilih
 
-
-    var table = $('#tabel').DataTable({
-      lengthChange: false,
-      language: {
-        search: 'Search...',
-        paginate: {
-          next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-          previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
-        }
-      },
-      ajax: "controller/invoice/listinvoice.php",
-      columns: [
-        { "data": "ID_Invoice" },
-        { "data": "Nama_Pelanggan" },
-        { "data": "Tanggal_Invoice" },
-        { "data": "Tanggal_JatuhTempo" },
-        { "data": "Jumlah_Pembayaran" },
-        {
-          data: null,
-          render: function (data, type, row) {
-            // Tambahkan tombol Edit
-            var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Pelanggan + '" data-nama="' + row.Nama_Pelanggan + '" data-email="' + row.Email_Pelanggan + '" data-telepon="' + row.NoTelp_Pelanggan + '" data-alamat="' + row.Alamat_Pelanggan + '">Edit</button>';
-            // Tambahkan tombol Delete
-            var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-id="' + row.ID_Pelanggan + '">Delete</button>';
-            // Gabungkan tombol Edit dan Delete
-            return editButton + ' ' + deleteButton;
-          }
-        }
-
-      ]
-    });
-
-    $(document).ready(function () {
-      // Saat form submit, kirim data ke API PHP dengan AJAX
-      $('#form-tambah-pelanggan').submit(function (event) {
-        // Mencegah form submit secara default
-        event.preventDefault();
-
-        // Ambil data dari form
-        var nama = $('#nama').val();
-        var email = $('#email').val();
-        var alamat = $('#alamat').val();
-        var telepon = $('#telepon').val();
-
-        // Buat object data yang akan dikirim ke API
-        var data = {
-          'nama': nama,
-          'email': email,
-          'alamat': alamat,
-          'telepon': telepon
-        };
-
-        // Kirim data ke API dengan AJAX
+        // Kirimkan data ke server menggunakan AJAX
         $.ajax({
           type: 'POST',
-          url: 'controller/pelanggan/tambahpelanggan.php',
-          data: data,
+          url: 'controller/invoice/caripelanggan.php', // Ganti dengan URL yang sesuai
+          data: { idPelanggan: idPelanggan },
           dataType: 'json',
-          success: function (response) {
-            // Tampilkan pesan berhasil atau gagal
-            if (response.status == 'success') {
-              Swal.fire({
-                icon: 'success',
-                title: response.status,
-                text: response.message,
-              })
-              table.ajax.reload();
-              // Reset nilai form
-              $('#form-tambah-pelanggan')[0].reset();
-              // Tutup modal
-              $('#modalTambahPelanggan').modal('hide');
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: response.status,
-                text: response.message,
-              })
-            }
+          success: function (data) {
+            // Isi input dengan data yang diterima dari server
+            $('#inputNamaPelanggan').val(data.nama);
+            $('#inputEmailPelanggan').val(data.email);
+            $('#inputTeleponPelanggan').val(data.telepon);
+            $('#inputAlamatPelanggan').val(data.alamat);
           },
           error: function (xhr, status, error) {
-            // Tampilkan pesan error
-            alert(error);
+            console.log(xhr.responseText);
           }
         });
       });
+      
+      // Ketika tombol Lanjut di modal Tambah Invoice ditekan
+      $('#btnLanjutTambahInvoice').click(function () {
+        // Ambil nilai dari input pada form Invoice
+        var idPelanggan = $('#inputIdPelanggan').val();
+        var namaPelanggan = $('#inputNamaPelanggan').val();
+        var emailPelanggan = $('#inputEmailPelanggan').val();
+        var teleponPelanggan = $('#inputTeleponPelanggan').val();
+        var alamatPelanggan = $('#inputAlamatPelanggan').val();
 
-      $('#tabel').on('click', '.btn-delete', function () {
-        // Ambil data dari tombol Delete
-        var id = $(this).data('id');
-        // Tampilkan konfirmasi Delete
-        Swal.fire({
-          title: 'Anda yakin?',
-          text: "data akan dihapus permanen",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              url: 'controller/pelanggan/deletepelanggan.php',
-              method: 'POST',
-              data: { id: id },
-              dataType: 'json',
-              success: function (response) {
-                // Cek apakah status response adalah success
-                if (response.status == 'success') {
-                  Swal.fire({
-                    icon: 'success',
-                    title: response.status,
-                    text: response.message,
-                  })
-                  // Reload data table
-                  table.ajax.reload();
-                } else {
-                  Swal.fire({
-                    icon: 'error',
-                    title: response.status,
-                    text: response.message,
-                  })
-                }
-              },
-              error: function (xhr, ajaxOptions, thrownError) {
-                // Tampilkan pesan error
-                alert(xhr.responseText);
-              }
-            });
-          }
-        })
+        // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
+        console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
       });
-
-      // Tambahkan event click pada tombol edit
-      $('#tabel').on('click', '.btn-edit', function () {
-        // Ambil data dari row tabel yang diklik
-        var id = $(this).data('id');
-        var nama = $(this).data('nama');
-        var email = $(this).data('email');
-        var alamat = $(this).data('alamat');
-        var telepon = $(this).data('telepon');
-
-        // Set value form pada modal edit pelanggan
-        $('#editId').val(id);
-        $('#editNama').val(nama);
-        $('#editEmail').val(email);
-        $('#editAlamat').val(alamat);
-        $('#editTelepon').val(telepon);
-
-        // Ubah ID modal edit pelanggan sesuai dengan ID pelanggan yang diedit
-        $('#editPelangganModal').attr('id', 'editPelangganModal-' + id);
-
-        // Tampilkan modal edit pelanggan
-        $('#editPelangganModal-' + id).modal('show');
-      });
-
-      //ketika form disubmit
-      $(document).on('submit', '#formEditPelanggan', function (e) {
-        e.preventDefault();
-
-        // Ambil data dari form
-        var idPelanggan = $('#editId').val();
-        var namaPelanggan = $('#editNama').val();
-        var emailPelanggan = $('#editEmail').val();
-        var alamatPelanggan = $('#editAlamat').val();
-        var teleponPelanggan = $('#editTelepon').val();
-
-        // Buat objek data untuk dikirim ke server
-        var data = {
-          id: idPelanggan,
-          nama: namaPelanggan,
-          email: emailPelanggan,
-          telepon: teleponPelanggan,
-          alamat: alamatPelanggan
-        };
-
-        // Kirim request ke API menggunakan AJAX
-        $.ajax({
-          url: 'controller/pelanggan/editpelanggan.php',
-          type: 'POST',
-          data: data,
-          success: function (response) {
-            // Tampilkan pesan sukses
-            Swal.fire({
-              icon: 'success',
-              title: response.status,
-              text: response.message,
-            })
-            // Refresh data pada tabel
-            $('#tabel').DataTable().ajax.reload();
-
-            // Tutup modal edit pelanggan
-            $('#modal-edit-pelanggan').modal('hide');
-          },
-          error: function (xhr, status, error) {
-            Swal.fire({
-              icon: 'error',
-              title: status,
-              text: error,
-            })
-          }
-        });
-      });
-
-
     });
+
   </script>
   <?php include 'modal/invoice.php'; ?>
 
