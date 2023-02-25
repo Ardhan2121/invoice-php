@@ -22,6 +22,11 @@
   <!-- sweetalert -->
   <link href="vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 
+  <!-- Pick date -->
+  <link rel="stylesheet" href="vendor/pickadate/themes/default.css">
+  <link rel="stylesheet" href="vendor/pickadate/themes/default.date.css">
+  <link href="../icon.css?family=Material+Icons" rel="stylesheet">
+
   <!-- Datatable -->
   <link href="vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
 
@@ -692,7 +697,7 @@
         <div class="card">
           <div class="card-header">
             <h5>Daftar Invoice</h5>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalPilihPelanggan">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfoInvoice">
               Buat Invoice
             </button>
           </div>
@@ -764,43 +769,81 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
+  <!-- pickdate -->
+  <script src="vendor/pickadate/picker.js"></script>
+  <script src="vendor/pickadate/picker.time.js"></script>
+  <script src="vendor/pickadate/picker.date.js"></script>
+
   <script>
     $(document).ready(function () {
+      var table = $('#tabel').DataTable({
+        lengthChange: false,
+        language: {
+          search: 'Search...',
+          paginate: {
+            next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+            previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
+          }
+        }
+      });
       // Ketika opsi yang dipilih berubah
       $('#inputIdPelanggan').change(function () {
-        var idPelanggan = $(this).val(); // Ambil nilai opsi yang dipilih
+          var idPelanggan = $(this).val(); // Ambil nilai opsi yang dipilih
 
-        // Kirimkan data ke server menggunakan AJAX
-        $.ajax({
-          type: 'POST',
-          url: 'controller/invoice/caripelanggan.php', // Ganti dengan URL yang sesuai
-          data: { idPelanggan: idPelanggan },
-          dataType: 'json',
-          success: function (data) {
-            // Isi input dengan data yang diterima dari server
-            $('#inputNamaPelanggan').val(data.nama);
-            $('#inputEmailPelanggan').val(data.email);
-            $('#inputTeleponPelanggan').val(data.telepon);
-            $('#inputAlamatPelanggan').val(data.alamat);
-          },
-          error: function (xhr, status, error) {
-            console.log(xhr.responseText);
+          // Kirimkan data ke server menggunakan AJAX
+          $.ajax({
+            type: 'POST',
+            url: 'controller/invoice/caripelanggan.php', // Ganti dengan URL yang sesuai
+            data: { idPelanggan: idPelanggan },
+            dataType: 'json',
+            success: function (data) {
+              // Isi input dengan data yang diterima dari server
+              $('#inputNamaPelanggan').val(data.nama);
+              $('#inputEmailPelanggan').val(data.email);
+              $('#inputTeleponPelanggan').val(data.telepon);
+              $('#inputAlamatPelanggan').val(data.alamat);
+            },
+            error: function (xhr, status, error) {
+              console.log(xhr.responseText);
+            }
+          });
+        });
+        // Ketika tombol Lanjut di modal Tambah Invoice ditekan
+        $('#btnLanjutTambahInvoice').click(function () {
+          // Ambil nilai dari input pada form Invoice
+          var idPelanggan = $('#inputIdPelanggan').val();
+          var namaPelanggan = $('#inputNamaPelanggan').val();
+          var emailPelanggan = $('#inputEmailPelanggan').val();
+          var teleponPelanggan = $('#inputTeleponPelanggan').val();
+          var alamatPelanggan = $('#inputAlamatPelanggan').val();
+
+          // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
+          console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
+        });
+      });
+
+      $(document).ready(function () {
+        // Ketika select pelanggan dipilih
+        $('#inputIdPelanggan').change(function () {
+          // Jika option yang dipilih tidak kosong
+          if ($(this).val() !== '') {
+            // Aktifkan tombol Lanjut
+            $('#btnLanjut2').prop('disabled', false);
+          } else {
+            // Jika kosong, nonaktifkan tombol Lanjut
+            $('#btnLanjut2').prop('disabled', true);
           }
         });
       });
-      // Ketika tombol Lanjut di modal Tambah Invoice ditekan
-      $('#btnLanjutTambahInvoice').click(function () {
-        // Ambil nilai dari input pada form Invoice
-        var idPelanggan = $('#inputIdPelanggan').val();
-        var namaPelanggan = $('#inputNamaPelanggan').val();
-        var emailPelanggan = $('#inputEmailPelanggan').val();
-        var teleponPelanggan = $('#inputTeleponPelanggan').val();
-        var alamatPelanggan = $('#inputAlamatPelanggan').val();
 
-        // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
-        console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
+      $(document).ready(function () {
+        // Inisialisasi datepicker
+        $('.TanggalJatuhTempo').pickadate({
+          formatSubmit: 'yyyy-mm-dd',
+          format: 'yyyy-mm-dd'
+        });
       });
-    });
+
 
   </script>
   <?php include 'modal/invoice.php'; ?>

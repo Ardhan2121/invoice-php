@@ -1,3 +1,34 @@
+<!-- modal info invoice -->
+<div class="modal fade" id="modalInfoInvoice" tabindex="-1" role="dialog" aria-labelledby="modalInfoInvoiceLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalInfoInvoiceLabel">Info Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group mb-2">
+                    <label for="inputJatuhTempo">Tanggal Invoice</label>
+                    <input class="datepicker-default form-control" data-value="<?php echo date('Y-m-d'); ?>" id="TanggalInvoice">
+                </div>
+                <div class="form-group" id="divTanggalManual">
+                    <label for="inputTanggalManual">Tanggal Jatuh Tempo (opsional)</label>
+                    <input class="datepicker-default form-control" id="TanggalJatuhTempo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn light btn-danger" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="btnPilihPelanggan" data-bs-dismiss="modal"
+                    disabled>Lanjut</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal pilih pelanggan -->
 <div class="modal fade" id="modalPilihPelanggan" tabindex="-1" role="dialog" aria-labelledby="modalPilihPelangganLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -11,7 +42,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="inputIdPelanggan">ID Pelanggan</label>
-                    <select class="form-control" id="inputIdPelanggan" name="id_pelanggan">
+                    <select class="default-select form-control wide" id="inputIdPelanggan" name="id_pelanggan">
                         <option value="">Pilih ID Pelanggan</option>
                         <?php
                         // Koneksi ke database
@@ -54,8 +85,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn light btn-danger" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary" id="btnLanjutTambahInvoice"
-                    data-bs-dismiss="modal">Lanjut</button>
+                <button type="button" class="btn btn-primary" id="btnLanjut2" data-bs-dismiss="modal"
+                    disabled>Lanjut</button>
             </div>
         </div>
     </div>
