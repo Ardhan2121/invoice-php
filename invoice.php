@@ -788,7 +788,6 @@
           }
         });
       });
-      
       // Ketika tombol Lanjut di modal Tambah Invoice ditekan
       $('#btnLanjutTambahInvoice').click(function () {
         // Ambil nilai dari input pada form Invoice
