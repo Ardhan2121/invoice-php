@@ -838,7 +838,7 @@
 
       $(document).ready(function () {
         // Inisialisasi datepicker
-        $('.TanggalJatuhTempo').pickadate({
+        $('.datepicker-default').pickadate({
           formatSubmit: 'yyyy-mm-dd',
           format: 'yyyy-mm-dd'
         });
