@@ -12,7 +12,8 @@
             <div class="modal-body">
                 <div class="form-group mb-2">
                     <label for="inputJatuhTempo">Tanggal Invoice</label>
-                    <input class="datepicker-default form-control" data-value="<?php echo date('Y-m-d'); ?>" id="TanggalInvoice">
+                    <input class="datepicker-default form-control" data-value="<?php echo date('Y-m-d'); ?>"
+                        id="TanggalInvoice">
                 </div>
                 <div class="form-group" id="divTanggalManual">
                     <label for="inputTanggalManual">Tanggal Jatuh Tempo (opsional)</label>
@@ -21,8 +22,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn light btn-danger" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary" id="btnLanjut" data-bs-dismiss="modal"
-                >Lanjut</button>
+                <button type="button" class="btn btn-primary" id="btnLanjut" data-bs-dismiss="modal">Lanjut</button>
             </div>
         </div>
     </div>
@@ -84,7 +84,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn light btn-danger" id="kembaliStep1" data-bs-dismiss="modal">Kembali</button>
+                <button type="button" class="btn light btn-danger" id="kembaliStep1"
+                    data-bs-dismiss="modal">Kembali</button>
                 <button type="button" class="btn btn-primary" id="btnLanjut2" data-bs-dismiss="modal"
                     disabled>Lanjut</button>
             </div>

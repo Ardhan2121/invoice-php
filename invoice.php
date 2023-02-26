@@ -39,12 +39,12 @@
   <!--*******************
         Preloader start
     ********************-->
-  <div id="preloader">
+  <!-- <div id="preloader">
     <div class="lds-ripple">
       <div></div>
       <div></div>
     </div>
-  </div>
+  </div> -->
   <!--*******************
         Preloader end
     ********************-->
@@ -776,6 +776,7 @@
 
   <script>
     $(document).ready(function () {
+      $('#modalListProduk').modal('show');
       var table = $('#tabel').DataTable({
         lengthChange: false,
         language: {
@@ -786,6 +787,7 @@
           }
         }
       });
+
       // Ketika opsi yang dipilih berubah
       $('#inputIdPelanggan').change(function () {
         var idPelanggan = $(this).val(); // Ambil nilai opsi yang dipilih
@@ -809,7 +811,7 @@
         });
       });
       // Ketika tombol Lanjut di modal Tambah Invoice ditekan
-      $('#btnLanjutTambahInvoice').click(function () {
+      $('#btnLanjut2').click(function () {
         // Ambil nilai dari input pada form Invoice
         var idPelanggan = $('#inputIdPelanggan').val();
         var namaPelanggan = $('#inputNamaPelanggan').val();
@@ -819,6 +821,7 @@
 
         // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
         console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
+        $('#modalListPembelian').modal('show');
       });
 
       $('#btnLanjut').click(function () {
@@ -826,10 +829,30 @@
         var tanggalInvoice = $('#TanggalInvoice').val();
         var tanggalJatuhTempo = $('#TanggalJatuhTempo').val();
 
-        // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
-        $('#modalPilihPelanggan').modal('show');
-        console.log(tanggalInvoice, tanggalJatuhTempo);
+        // Kirim data ke script PHP menggunakan Ajax
+        $.ajax({
+          type: 'POST',
+          url: 'controller/invoice/datainvoice.php', // URL to the PHP file that processes the data
+          data: {
+            tanggalInvoice: tanggalInvoice,
+            tanggalJatuhTempo: tanggalJatuhTempo
+          },
+          success: function (response) {
+
+            alert(response);
+            // If the request is successful
+            alert('Data has been submitted!');
+            $('#modalPilihPelanggan').modal('show');
+          },
+          error: function (xhr, status, error) {
+            // If there is an error
+            console.log(xhr.responseText);
+            console.log(status);
+            console.log(error);
+          }
+        });
       });
+
 
       $('#kembaliStep1').click(function () {
         $('#modalInfoInvoice').modal('show');
@@ -879,10 +902,6 @@
         }
       });
     });
-
-
-
-
 
   </script>
   <?php include 'modal/invoice.php'; ?>
