@@ -788,61 +788,100 @@
       });
       // Ketika opsi yang dipilih berubah
       $('#inputIdPelanggan').change(function () {
-          var idPelanggan = $(this).val(); // Ambil nilai opsi yang dipilih
+        var idPelanggan = $(this).val(); // Ambil nilai opsi yang dipilih
 
-          // Kirimkan data ke server menggunakan AJAX
-          $.ajax({
-            type: 'POST',
-            url: 'controller/invoice/caripelanggan.php', // Ganti dengan URL yang sesuai
-            data: { idPelanggan: idPelanggan },
-            dataType: 'json',
-            success: function (data) {
-              // Isi input dengan data yang diterima dari server
-              $('#inputNamaPelanggan').val(data.nama);
-              $('#inputEmailPelanggan').val(data.email);
-              $('#inputTeleponPelanggan').val(data.telepon);
-              $('#inputAlamatPelanggan').val(data.alamat);
-            },
-            error: function (xhr, status, error) {
-              console.log(xhr.responseText);
-            }
-          });
-        });
-        // Ketika tombol Lanjut di modal Tambah Invoice ditekan
-        $('#btnLanjutTambahInvoice').click(function () {
-          // Ambil nilai dari input pada form Invoice
-          var idPelanggan = $('#inputIdPelanggan').val();
-          var namaPelanggan = $('#inputNamaPelanggan').val();
-          var emailPelanggan = $('#inputEmailPelanggan').val();
-          var teleponPelanggan = $('#inputTeleponPelanggan').val();
-          var alamatPelanggan = $('#inputAlamatPelanggan').val();
-
-          // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
-          console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
-        });
-      });
-
-      $(document).ready(function () {
-        // Ketika select pelanggan dipilih
-        $('#inputIdPelanggan').change(function () {
-          // Jika option yang dipilih tidak kosong
-          if ($(this).val() !== '') {
-            // Aktifkan tombol Lanjut
-            $('#btnLanjut2').prop('disabled', false);
-          } else {
-            // Jika kosong, nonaktifkan tombol Lanjut
-            $('#btnLanjut2').prop('disabled', true);
+        // Kirimkan data ke server menggunakan AJAX
+        $.ajax({
+          type: 'POST',
+          url: 'controller/invoice/caripelanggan.php', // Ganti dengan URL yang sesuai
+          data: { idPelanggan: idPelanggan },
+          dataType: 'json',
+          success: function (data) {
+            // Isi input dengan data yang diterima dari server
+            $('#inputNamaPelanggan').val(data.nama);
+            $('#inputEmailPelanggan').val(data.email);
+            $('#inputTeleponPelanggan').val(data.telepon);
+            $('#inputAlamatPelanggan').val(data.alamat);
+          },
+          error: function (xhr, status, error) {
+            console.log(xhr.responseText);
           }
         });
       });
+      // Ketika tombol Lanjut di modal Tambah Invoice ditekan
+      $('#btnLanjutTambahInvoice').click(function () {
+        // Ambil nilai dari input pada form Invoice
+        var idPelanggan = $('#inputIdPelanggan').val();
+        var namaPelanggan = $('#inputNamaPelanggan').val();
+        var emailPelanggan = $('#inputEmailPelanggan').val();
+        var teleponPelanggan = $('#inputTeleponPelanggan').val();
+        var alamatPelanggan = $('#inputAlamatPelanggan').val();
 
-      $(document).ready(function () {
-        // Inisialisasi datepicker
-        $('.datepicker-default').pickadate({
-          formatSubmit: 'yyyy-mm-dd',
-          format: 'yyyy-mm-dd'
-        });
+        // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
+        console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
       });
+
+      $('#btnLanjut').click(function () {
+        // Ambil nilai dari input pada form Invoice
+        var tanggalInvoice = $('#TanggalInvoice').val();
+        var tanggalJatuhTempo = $('#TanggalJatuhTempo').val();
+
+        // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
+        $('#modalPilihPelanggan').modal('show');
+        console.log(tanggalInvoice, tanggalJatuhTempo);
+      });
+
+      $('#kembaliStep1').click(function () {
+        $('#modalInfoInvoice').modal('show');
+      });
+    });
+
+    $(document).ready(function () {
+      // Ketika select pelanggan dipilih
+      $('#inputIdPelanggan').change(function () {
+        // Jika option yang dipilih tidak kosong
+        if ($(this).val() !== '') {
+          // Aktifkan tombol Lanjut
+          $('#btnLanjut2').prop('disabled', false);
+        } else {
+          // Jika kosong, nonaktifkan tombol Lanjut
+          $('#btnLanjut2').prop('disabled', true);
+        }
+      });
+    });
+
+    $(document).ready(function () {
+      // Inisialisasi datepicker
+      $('.datepicker-default').pickadate({
+        formatSubmit: 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd'
+      });
+
+      // event handler ketika tanggal jatuh tempo diubah
+      $('#TanggalJatuhTempo').change(function () {
+        // mendapatkan nilai input tanggal invoice dan tanggal jatuh tempo
+        var tanggalInvoice = $('#TanggalInvoice').val();
+        var tanggalJatuhTempo = $('#TanggalJatuhTempo').val();
+
+        // konversi string tanggal ke format Date
+        tanggalInvoice = new Date(tanggalInvoice);
+        tanggalJatuhTempo = new Date(tanggalJatuhTempo);
+
+        // validasi tanggal jatuh tempo tidak boleh kurang dari tanggal invoice
+        if (tanggalJatuhTempo < tanggalInvoice) {
+          Swal.fire({
+            icon: 'error',
+            title: "Terjadi Kesalahan!",
+            text: "Tanggal jatuh tempo tidak boleh kurang dari tanggal invoice",
+          })
+          // reset tanggal jatuh tempo menjadi tanggal invoice
+          $('#TanggalJatuhTempo').val('');
+        }
+      });
+    });
+
+
+
 
 
   </script>

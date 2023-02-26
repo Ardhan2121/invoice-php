@@ -21,8 +21,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn light btn-danger" data-bs-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary" id="btnPilihPelanggan" data-bs-dismiss="modal"
-                    disabled>Lanjut</button>
+                <button type="button" class="btn btn-primary" id="btnLanjut" data-bs-dismiss="modal"
+                >Lanjut</button>
             </div>
         </div>
     </div>
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn light btn-danger" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn light btn-danger" id="kembaliStep1" data-bs-dismiss="modal">Kembali</button>
                 <button type="button" class="btn btn-primary" id="btnLanjut2" data-bs-dismiss="modal"
                     disabled>Lanjut</button>
             </div>
