@@ -820,7 +820,26 @@
         var alamatPelanggan = $('#inputAlamatPelanggan').val();
 
         // Lakukan sesuatu dengan nilai-nilai tersebut, misalnya simpan ke database
-        console.log(idPelanggan, namaPelanggan, emailPelanggan, teleponPelanggan, alamatPelanggan);
+        $.ajax({
+          type: 'POST',
+          url: 'controller/invoice/datainvoice.php', // URL to the PHP file that processes the data
+          data: {
+            idPelanggan: idPelanggan,
+            namaPelanggan: namaPelanggan,
+            emailPelanggan: emailPelanggan,
+            teleponPelanggan: teleponPelanggan,
+            alamatPelanggan: alamatPelanggan
+          },
+          success: function (response) {
+            window.location.href = 'buatinvoice.php';
+          },
+          error: function (xhr, status, error) {
+            // If there is an error
+            console.log(xhr.responseText);
+            console.log(status);
+            console.log(error);
+          }
+        });
         $('#modalListPembelian').modal('show');
       });
 
@@ -838,10 +857,6 @@
             tanggalJatuhTempo: tanggalJatuhTempo
           },
           success: function (response) {
-
-            alert(response);
-            // If the request is successful
-            alert('Data has been submitted!');
             $('#modalPilihPelanggan').modal('show');
           },
           error: function (xhr, status, error) {
