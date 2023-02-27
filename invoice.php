@@ -776,7 +776,6 @@
 
   <script>
     $(document).ready(function () {
-      $('#modalListProduk').modal('show');
       var table = $('#tabel').DataTable({
         lengthChange: false,
         language: {
