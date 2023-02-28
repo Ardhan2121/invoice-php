@@ -712,23 +712,91 @@
             </div>
           </div>
           <div class="col-xl-4">
-            <div class="card" style="height: 80vh">
-              <div class="card-header">
-                <h4>Daftar Pembelian</h4>
-              </div>
-              <div class="card-body p-1">
-                <div class="wrapper" style="height: 60%">
-                  <table class="table" id="tabelpembelian">
-                    <tbody></tbody>
-                  </table>
+            <div class="card">
+              <div class="card-body">
+                <div class="wrapper">
+                  <div class="wrapper d-flex justify-content-between align-items-center mb-4">
+                    <h4>Data Pelanggan</h4>
+                  </div>
+                  <div class="wrapper d-block">
+                    <div class="wrapper d-flex justify-content-between">
+                      <p>Nama : </p>
+                      <p>
+                        <?php echo $_SESSION['namaPelanggan']; ?>
+                      </p>
+                    </div>
+                    <div class="wrapper d-flex justify-content-between">
+                      <p>Telepon :</p>
+                      <p>
+                        <?php echo $_SESSION['teleponPelanggan']; ?>
+                      </p>
+                    </div>
+                    <div class="wrapper d-flex justify-content-between">
+                      <p>Alamat : </p>
+                      <p>
+                        <?php echo $_SESSION['alamatPelanggan']; ?>
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="card-footer p-0">
-                <h4>Subtotal</h4>
-                <button id="kirim" class="btn btn-lg btn-square btn-primary w-100">Buat Invoice</button>
+                <hr>
+
+                <?php
+                ?>
+
+                <div class="wrapper d-flex justify-content-between mb-4 align-items-center">
+                  <h4>List pesanan</h4>
+                </div>
+
+                <div class="wrapper d-flex justify-content-between">
+                  <p class="my-0">No Inv :</p>
+                  <p class="my-0">
+                    <?php  ?>
+                  </p>
+                </div>
+                <div class="wrapper d-flex justify-content-between">
+                  <p class="">Kasir :</p>
+                  <p class="">
+                    <?php ?>
+                  </p>
+                </div>
+
+                <div class="wrapper justify-content-between align-items-center">
+                </div>
+
+                <hr>
+
+                <!-- list pesanan -->
+                <div class="wrapper overflow-auto" style="max-height:300px;">
+                <table class="table" id="table-pembelian">
+                  <thead>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Harga</th>
+                    <th>QTY</th>
+                    <th>Total</th>
+                    <th></th>
+                  </thead>
+                </table>
+                </div>
+
+                <!-- total -->
+                <div class="wrapper d-flex justify-content-between">
+                  <p>Total</p>
+                  <p>
+                  </p>
+                </div>
+
+
+
+                <!-- submit -->
+                <form action="server/transaksi/simpan.php" method="post" onsubmit="return validateFormsimpan()">
+                  <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
+                </form>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -786,132 +854,23 @@
   <script src="vendor/pickadate/picker.time.js"></script>
   <script src="vendor/pickadate/picker.date.js"></script>
 
+  <!-- controller -->
+  <script src="js/data/buat-invoice/listproduk.js"></script>
+  <script src="js/data/buat-invoice/tambahpembelian.js"></script>
+
   <script>
-    <?php if (!isset($_SESSION['namaPelanggan'])) { ?>
-      Swal.fire({
-        title: 'Terjadi Kesalahan',
-        text: "Anda belum mengisi data pelanggan",
-        icon: 'error',
-        confirmButtonColor: '#3085d6',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = 'invoice.php';
-        }
-      })
-    <?php } ?>
-
-    $(document).ready(function () {
-      var table = $('#listproduk').DataTable({
-        lengthChange: false,
-        info: false,
-        paging: false,
-        language: {
-          search: 'Search...',
-        },
-        ajax: "controller/invoice/daftarproduk.php",
-        "columns": [
-          { "data": "ID_Produk" },
-          { "data": "Nama_Produk" },
-          {
-            "data": "Harga_Produk"
-          },
-          {
-            "data": "Qty",
-            "render": function (data, type, row, meta) {
-              return '<input type="number" class="form-control form-control-sm qty-produk" value="1">';
-            }
-          },
-          {
-            "data": "ID_Produk",
-            "render": function (data, type, row, meta) {
-              return '<button class="btn btn-sm btn-primary btn-tambah">Tambah</button>';
-            }
-          }
-        ]
-      });
-      // Function untuk menghasilkan baris dalam tabel daftar pembelian
-      function generateRow(id, nama_produk, harga, qty, total) {
-        return '<tr>' +
-          '<td style="display:none;">' + id + '</td>' +
-          '<td>' + nama_produk + '</td>' +
-          '<td>' + harga + '</td>' +
-          '<td>' + qty + '</td>' +
-          '<td>' + total + '</td>' +
-          '<td>' +
-          '<button class="btn btn-danger btn-hapus">Hapus</button>' +
-          '</td>' +
-          '</tr>';
-      }
-
-      // Ketika tombol tambah pada daftar produk di klik
-      $('#listproduk').on('click', '.btn-tambah', function () {
-        var data = table.row($(this).parents('tr')).data();
-        var id_produk = data.ID_Produk;
-        var nama_produk = data.Nama_Produk;
-        var harga_produk = data.Harga_Produk;
-        var qty_produk = $(this).parents('tr').find('.qty-produk').val();
-        var total_produk = harga_produk * qty_produk;
-
-        // Cek apakah produk sudah ada di daftar pembelian
-        var produk_ada = false;
-        $('#tabelpembelian tbody tr').each(function () {
-          var id = $(this).find('td:eq(0)').text();
-          if (id == id_produk) {
-            var qty_lama = parseInt($(this).find('td:eq(3)').text());
-            var qty_baru = parseInt(qty_produk);
-            var qty_total = qty_lama + qty_baru;
-            $(this).find('td:eq(3)').text(qty_total);
-            $(this).find('td:eq(4)').text(harga_produk * qty_total);
-            produk_ada = true;
-            return false;
-          }
-        });
-
-        // Jika produk belum ada di daftar pembelian, tambahkan baris baru
-        if (!produk_ada) {
-          var row = generateRow(id_produk, nama_produk, harga_produk, qty_produk, total_produk);
-          $('#tabelpembelian tbody').append(row);
-          $('#tabelpembelian tbody tr:last').attr('data-id-produk', id_produk);
-        }
-
-        $('#modalListProduk').modal('hide');
-      });
-
-      // Ketika tombol hapus pada daftar pembelian di klik
-      $('#tabelpembelian').on('click', '.btn-hapus', function () {
-        $(this).closest('tr').remove();
-      });
-
-      $("#kirim").click(function () {
-        // Ambil semua data dari tabel
-        var data = [];
-        $('#tabelpembelian tbody tr').each(function () {
-          var row_data = [];
-          $(this).find('td').each(function () {
-            row_data.push($(this).text());
-          });
-          data.push(row_data);
-        });
-
-        console.log(data);
-
-        // Kirim data ke server
-        $.ajax({
-          url: 'controller/invoice/buatinvoice.php',
-          method: 'POST',
-          data: { data: JSON.stringify(data) },
-          success: function (response) {
-            alert('Data berhasil disimpan ke database!');
-            console.log(JSON.stringify(data));
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.log(textStatus, errorThrown);
-          }
-        });
-      });
-
-
-    });
+    // <?php if (!isset($_SESSION['namaPelanggan'])) { ?>
+    //   Swal.fire({
+    //     title: 'Terjadi Kesalahan',
+    //     text: "Anda belum mengisi data pelanggan",
+    //     icon: 'error',
+    //     confirmButtonColor: '#3085d6',
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       window.location.href = 'invoice.php';
+    //     }
+    //   })
+    // <?php } ?>
   </script>
 </body>
 

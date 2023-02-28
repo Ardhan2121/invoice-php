@@ -11,5 +11,4 @@ $_SESSION['namaPelanggan'] = $_POST['namaPelanggan'];
 $_SESSION['emailPelanggan'] = $_POST['emailPelanggan'];
 $_SESSION['teleponPelanggan'] = $_POST['teleponPelanggan'];
 $_SESSION['alamatPelanggan'] = $_POST['alamatPelanggan'];
-
 ?>
