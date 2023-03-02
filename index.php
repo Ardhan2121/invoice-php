@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php session_start();
+$_SESSION['hal'] = "Dashboard";
+?>
 
 <head>
   <meta charset="utf-8" />
@@ -717,8 +720,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-4">
-            <div class="widget-stat card">
+          <div class="col-lg-4">
+            <div class="widget-stat card ">
               <div class="card-body  p-4">
                 <div class="media">
                   <span class="me-3 bg-danger">
@@ -732,7 +735,7 @@
               </div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-lg-4">
             <div class="widget-stat card">
               <div class="card-body p-4">
                 <div class="media">
@@ -750,20 +753,16 @@
               </div>
             </div>
           </div>
-          <div class="col-4">
+          <div class="col-lg-4">
             <div class="widget-stat card">
               <div class="card-body  p-4">
                 <div class="media">
                   <span class="me-3 bg-primary text-white">
                     <i class="la la-user"></i>
                   </span>
-                  <div class="media-body">
+                  <div class="media-body text-end">
                     <p class="mb-1">Total Pelanggan </p>
                     <h3 class="">3280</h3>
-                    <div class="progress mb-2 bg-light">
-                      <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
-                    </div>
-                    <small>80% kenaikan dalam 20 hari</small>
                   </div>
                 </div>
               </div>
