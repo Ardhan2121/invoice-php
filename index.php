@@ -1,9 +1,3 @@
-<?php
-session_start();
-if(!isset($_SESSION["login"])){
-  header("location:login.php");
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,24 +51,8 @@ if(!isset($_SESSION["login"])){
     <!--**********************************
             Nav header start
         ***********************************-->
-        <div class="header border-bottom">
-            <div class="header-content">
-                <nav class="navbar navbar-expand">
-                    <div class="collapse navbar-collapse justify-content-between">
-                        <div class="header-left">
-							<div class="dashboard_bar">
-                                Dashboard
-                            </div>
-                            <a href="logout.php">logout</a>
-                        </div>
-                        
-                    </div>
-				</nav>
-			</div>
-		</div>
-
     <div class="nav-header">
-      <a href="index.php" class="brand-logo">
+      <a href="index.html" class="brand-logo">
         <svg class="logo-abbr" width="55" height="55" viewbox="0 0 55 55" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -708,78 +686,147 @@ if(!isset($_SESSION["login"])){
     <!--**********************************
             Content body start
         ***********************************-->
+    <!-- row -->
     <div class="content-body">
-      <!-- row -->
       <div class="container-fluid">
-        <div class="card">
-        <div class="row d-flex justify-content-end">
-                    <div class="col-lg-12">
-                        <div class="profile card card-body px-3 pt-3 pb-0">
-                            <div class="profile-head">
-                                <div class="photo-content">
-                                    <div class="cover-photo rounded"></div>
-                                </div>
-                                <div class="profile-info">
-									<div class="profile-photo">
-										<img src="images/download.png" class="img-fluid rounded-circle" alt="">
-									</div>
-									<div class="profile-details">
-										<div class="profile-name px-3 pt-2">
-											<h4 class="text-primary mb-0">Setia Sejahtera Perkasa</h4>
-											<p>SSP_ID</p>
-										</div>
-										<div class="profile-email px-2 pt-2">
-											<h4 class="text-muted mb-0">ssp_Id@gmail.com</h4>
-											<p>Email</p>
-										</div>
+
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="profile card card-body px-3 pt-3 pb-0">
+              <div class="profile-head">
+                <div class="photo-content">
+                  <div class="cover-photo rounded"></div>
+                </div>
+                <div class="profile-info">
+                  <div class="profile-photo">
+                    <img src="images/download.png" class="img-fluid rounded-circle" alt="">
+                  </div>
+                  <div class="profile-details">
+                    <div class="profile-name px-3 pt-2">
+                      <h4 class="text-primary mb-0">Setia sejahtera perkasa</h4>
+                      <p>SSP</p>
+                    </div>
+                    <div class="profile-email px-2 pt-2">
+                      <h4 class="text-muted mb-0">ssp@gmail.com</h4>
+                      <p>Email</p>
+                    </div>
                   </div>
                 </div>
-                <div class="container-fluid">
-                  <h3 class="text-center">Menerima Jasa Digital Marketing</h3>
-                </div>
-                <div class="container-fluid d-flex justify-content-between">
-                  <div class="card" style="width: 18rem;">
-    <img src="https://sejahteraperkasa.id/wp-content/uploads/2022/06/WhatsApp-Image-2022-06-09-at-15.30.57-1-300x200.jpeg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <p class="card-text">SEO sangat penting untuk bisnis anda dengan teknik SEO memungkinkan situs website Anda dapat menduduki halaman teratas Google untuk kata kunci yang sering dicari orang.</p>
-    </div>
-  </div>
-                  <div class="card" style="width: 18rem;">
-    <img src="https://sejahteraperkasa.id/wp-content/uploads/2022/06/6.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-  </div>
-                  <div class="card" style="width: 18rem;">
-    <img src="https://sejahteraperkasa.id/wp-content/uploads/2022/06/2-1536x1012.jpg" class="card-img-top" alt="...">
-    <div class="card-body">
-      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    </div>
-  </div>
-                </div> 
               </div>
             </div>
-    <!--**********************************
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="widget-stat card">
+              <div class="card-body  p-4">
+                <div class="media">
+                  <span class="me-3 bg-danger">
+                    <i class="flaticon-381-calendar-1 text-white"></i>
+                  </span>
+                  <div class="media-body text-end">
+                    <p class="mb-1">Invioce Terbaru</p>
+                    <h3 class="">76</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="widget-stat card">
+              <div class="card-body p-4">
+                <div class="media">
+                  <span class="me-3 bg-success">
+                  <svg class="text-white" id="icon-revenue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+											<line x1="12" y1="1" x2="12" y2="23"></line>
+											<path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+										</svg>
+                  </span>
+                  <div class="media-body text-end">
+                    <p class="mb-1">Pendapatan</p>
+                    <h3 class="">56K</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="widget-stat card">
+              <div class="card-body  p-4">
+                <div class="media">
+                  <span class="me-3 bg-primary text-white">
+                    <i class="la la-user"></i>
+                  </span>
+                  <div class="media-body">
+                    <p class="mb-1">Total Pelanggan </p>
+                    <h3 class="">3280</h3>
+                    <div class="progress mb-2 bg-light">
+                      <div class="progress-bar progress-animated bg-primary" style="width: 80%"></div>
+                    </div>
+                    <small>80% kenaikan dalam 20 hari</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-xl-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Dark card title</h5>
+            </div>
+            <div class="card-body mb-0">
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+              <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
+                somewhere</a>
+            </div>
+            <div class="card-footer bg-transparent border-0">Last updated 3 min ago
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="card-title">Dark card title</h5>
+            </div>
+            <div class="card-body mb-0">
+              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                content.</p>
+              <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
+                somewhere</a>
+            </div>
+            <div class="card-footer bg-transparent border-0">Last updated 3 min ago
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--**********************************
             Content body end
         ***********************************-->
 
-    <!--**********************************
+  <!--**********************************
             Footer start
         ***********************************-->
-    <div class="footer">
-      <div class="copyright">
-        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">SSP</a> 2023</p>
-      </div>
+  <div class="footer">
+    <div class="copyright">
+      <p>Copyright © Designed &amp; Developed by <a href="https://youtu.be/xvFZjo5PgG0" target="_blank">XI RPL - SMK
+          MEDIA INFORMATIKA</a> 2023</p>
     </div>
-    <!--**********************************
+  </div>
+  <!--**********************************
             Footer end
         ***********************************-->
 
-    <!--**********************************
+  <!--**********************************
            Support ticket button start
         ***********************************-->
 
-    <!--**********************************
+  <!--**********************************
            Support ticket button end
         ***********************************-->
 
