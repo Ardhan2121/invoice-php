@@ -696,7 +696,7 @@
       <!-- row -->
       <div class="container-fluid">
         <div class="row">
-          <div class="col-xl-8">
+          <div class="col-xl-7">
             <div class="card">
               <div class="card-body">
                 <table class="display w-100" id="listproduk">
@@ -711,7 +711,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xl-4">
+          <div class="col-xl-5">
             <div class="card">
               <div class="card-body">
                 <div class="wrapper">
@@ -751,7 +751,7 @@
                 <div class="wrapper d-flex justify-content-between">
                   <p class="my-0">No Inv :</p>
                   <p class="my-0">
-                    <?php  ?>
+                    <?php ?>
                   </p>
                 </div>
                 <div class="wrapper d-flex justify-content-between">
@@ -768,16 +768,16 @@
 
                 <!-- list pesanan -->
                 <div class="wrapper overflow-auto" style="max-height:300px;">
-                <table class="table" id="table-pembelian">
-                  <thead>
-                    <th>ID</th>
-                    <th>Nama</th>
-                    <th>Harga</th>
-                    <th>QTY</th>
-                    <th>Total</th>
-                    <th></th>
-                  </thead>
-                </table>
+                  <table class="table" id="table-pembelian">
+                    <thead>
+                      <th>ID</th>
+                      <th>Nama</th>
+                      <th>Harga</th>
+                      <th>QTY</th>
+                      <th>Total</th>
+                      <th></th>
+                    </thead>
+                  </table>
                 </div>
 
                 <!-- total -->
@@ -860,17 +860,97 @@
 
   <script>
     // <?php if (!isset($_SESSION['namaPelanggan'])) { ?>
-    //   Swal.fire({
-    //     title: 'Terjadi Kesalahan',
-    //     text: "Anda belum mengisi data pelanggan",
-    //     icon: 'error',
-    //     confirmButtonColor: '#3085d6',
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       window.location.href = 'invoice.php';
-    //     }
-    //   })
-    // <?php } ?>
+      //   Swal.fire({
+      //     title: 'Terjadi Kesalahan',
+      //     text: "Anda belum mengisi data pelanggan",
+      //     icon: 'error',
+      //     confirmButtonColor: '#3085d6',
+      //   }).then((result) => {
+      //     if (result.isConfirmed) {
+      //       window.location.href = 'invoice.php';
+      //     }
+      //   })
+      // <?php } ?>
+
+    $(document).ready(function () {
+      var table = $('#listproduk').DataTable({
+        lengthChange: false,
+        info: false,
+        paging: false,
+        language: {
+          search: 'Search...',
+        },
+        ajax: "controller/invoice/daftarproduk.php",
+        "columns": [
+          { "data": "ID_Produk" },
+          { "data": "Nama_Produk" },
+          {
+            "data": "Harga_Produk"
+          },
+          {
+            "data": "Qty",
+            "render": function (data, type, row, meta) {
+              return '<input type="number" class="form-control form-control-sm qty-produk" value="1">';
+            }
+          },
+          {
+            "data": "ID_Produk",
+            "render": function (data, type, row, meta) {
+              return '<button class="btn btn-sm btn-primary btn-tambah"><i class="fas fa-cart-plus"></i></button>';
+            }
+          }
+        ]
+      });
+    });
+
+    $(document).ready(function () {
+      $('#listproduk').on('click', '.btn-tambah', function () {
+        var rowData = [];
+        var currentRow = $(this).closest('tr');
+
+        // Mendapatkan nilai setiap sel pada baris yang diklik
+        currentRow.children('td').each(function () {
+          var cellData = $(this).text();
+          rowData.push(cellData);
+        });
+
+        // Mengambil nilai qty dari input pada sel keempat pada baris
+        var qty = currentRow.find('td:eq(3) input').val();
+
+        // Menyiapkan data yang akan ditambahkan ke dalam tabel daftar pembelian
+        var data = {
+          'id': rowData[0],
+          'nama': rowData[1],
+          'harga': rowData[2],
+          'qty': qty
+        };
+
+        console.log(data);
+
+        // Cek apakah barang sudah ada di tabel daftar pembelian
+        var sudahAda = false;
+        $('#table-pembelian tbody tr').each(function () {
+          if ($(this).find('td:eq(0)').text() === data.id) {
+            // Jika barang sudah ada, tambahkan qty
+            var existingQty = $(this).find('td:eq(3)').text();
+            var newQty = parseInt(existingQty) + parseInt(qty);
+            $(this).find('td:eq(3)').text(newQty);
+            sudahAda = true;
+          }
+        });
+
+        // Jika barang belum ada, tambahkan ke dalam tabel daftar pembelian
+        if (!sudahAda) {
+          var rowHtml = '<tr><td>' + data.id + '</td><td>' + data.nama + '</td><td>' + data.harga + '</td><td>' + data.qty + '</td></tr>';
+          $('#table-pembelian tbody').append(rowHtml);
+        }
+      });
+    });
+
+
+
+
+
   </script>
 </body>
 
