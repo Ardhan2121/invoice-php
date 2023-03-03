@@ -9,6 +9,7 @@ if (isset($_POST['masuk'])) {
     $sql = mysqli_query($conn,"SELECT * FROM logn WHERE username='$username' AND password='$password'");
     if(mysqli_num_rows($sql) > 0){
         $_SESSION["login"] = false;
+        sleep(3);
         header("location:index.php");
     }else{
         $eror = true;
@@ -61,7 +62,7 @@ if (isset($_POST['masuk'])) {
                                     <form action="" method="post">
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Username</strong></label>
-                                            <input type="text" class="form-control" name="username" placeholder="Username">
+                                            <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off">
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
@@ -105,6 +106,7 @@ if (isset($_POST['masuk'])) {
 	<script src="js/styleSwitcher.js"></script>
     <!-- Toastr -->
     <script src="vendor/toastr/js/toastr.min.js"></script>
+    <script src="/js/"></script>
     <script>
         <?php if(isset($eror)) : ?>
         toastr.error("Password anda salah", "WRONG !", {
