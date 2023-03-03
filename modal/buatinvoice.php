@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group">
                     <label for="inputQtyProduk">QTY Produk</label>
-                    <input type="number" class="form-control" id="inputQtyProduk" name="qty_Produk">
+                    <input type="number" class="form-control" id="inputQtyProduk" value="1" min="1" name="qty_Produk">
                 </div>
             </div>
             <div class="modal-footer">

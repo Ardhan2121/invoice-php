@@ -818,7 +818,8 @@ $_SESSION['hal'] = 'Invoice';
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
 
   <!-- Datatable -->
   <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
@@ -851,14 +852,10 @@ $_SESSION['hal'] = 'Invoice';
 
       var daftarpembelian = [];
 
-      $(function () {
-        $('#inputHargaProduk').maskMoney({
-          prefix: 'Rp ',
-          thousands: '.',
-          decimal: ',',
-          precision: 0
-        });
-      });
+      function formatAngka(angka) {
+        return $.number(angka, 0, ',', '.');
+      }
+
 
       // Ketika opsi yang dipilih berubah
       $('#inputIdProduk').change(function () {
@@ -874,8 +871,6 @@ $_SESSION['hal'] = 'Invoice';
             // Isi input dengan data yang diterima dari server
             $('#inputNamaProduk').val(data.nama);
             $('#inputHargaProduk').val(data.harga);
-            $('#inputHargaProduk').maskMoney('mask');
-            table.ajax.reload();
           },
           error: function (xhr, status, error) {
             console.log(xhr.responseText);
@@ -883,14 +878,8 @@ $_SESSION['hal'] = 'Invoice';
         });
       });
 
-      function updateTable() {
-        table.clear();
-        table.rows.add(daftarpembelian);
-        table.draw();
-      }
-
-      $('#inputQtyProduk').change(function () {
-        if ($("#inputQtyProduk").val() !== '') {
+      $('#inputIdProduk').change(function () {
+        if ($("#inputIdProduk").val() !== '') {
           // Aktifkan tombol Lanjut
           $('#btntambah').prop('disabled', false);
         } else {
@@ -902,10 +891,9 @@ $_SESSION['hal'] = 'Invoice';
       $('#btntambah').click(function () {
         var idProduk = $('#inputIdProduk').val();
         var namaProduk = $('#inputNamaProduk').val();
-        var hargaProduk = parseInt($('#inputHargaProduk').val());
+        var hargaProduk = formatAngka($('#inputHargaProduk').val());
         var qtyProduk = $('#inputQtyProduk').val();
         var total = hargaProduk * qtyProduk;
-
 
         var produk = {
           id: idProduk,
@@ -914,6 +902,8 @@ $_SESSION['hal'] = 'Invoice';
           qty: parseInt(qtyProduk),
           total: total
         };
+
+        console.log(produk);
       });
 
     });
