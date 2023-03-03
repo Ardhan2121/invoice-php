@@ -1,6 +1,10 @@
 <!DOCTYPE html>
-<?php session_start(); ?>
 <html lang="en">
+
+<?php
+session_start();
+$_SESSION['hal'] = 'Invoice';
+?>
 
 <head>
   <meta charset="utf-8" />
@@ -21,12 +25,12 @@
   <!-- FAVICONS ICON -->
 
   <!-- sweetalert -->
-  <link href="vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet" />
+  <link href="vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
 
   <!-- Pick date -->
-  <link rel="stylesheet" href="vendor/pickadate/themes/default.css" />
-  <link rel="stylesheet" href="vendor/pickadate/themes/default.date.css" />
-  <link href="../icon.css?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="vendor/pickadate/themes/default.css">
+  <link rel="stylesheet" href="vendor/pickadate/themes/default.date.css">
+  <link href="../icon.css?family=Material+Icons" rel="stylesheet">
 
   <!-- Datatable -->
   <link href="vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -693,110 +697,84 @@
             Content body start
         ***********************************-->
     <div class="content-body">
-      <!-- row -->
       <div class="container-fluid">
         <div class="row">
-          <div class="col-xl-7">
-            <div class="card">
+          <div class="col-lg-12">
+
+            <div class="card mt-3">
+              <div class="card-header"> Invoice <strong>01/01/01/2018</strong> <span class="float-end">
+                  <strong>Status:</strong> Pending</span> </div>
               <div class="card-body">
-                <table class="display w-100" id="listproduk">
-                  <thead>
-                    <th>ID</th>
-                    <th>Nama Produk</th>
-                    <th>Harga Produk</th>
-                    <th>QTY</th>
-                    <th></th>
-                  </thead>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-5">
-            <div class="card">
-              <div class="card-body">
-                <div class="wrapper">
-                  <div class="wrapper d-flex justify-content-between align-items-center mb-4">
-                    <h4>Data Pelanggan</h4>
+                <div class="row mb-5">
+                  <div class="col-lg-6">
+                    <h6>From:</h6>
+                    <div> <strong>Webz Poland</strong> </div>
+                    <div>Madalinskiego 8</div>
+                    <div>71-101 Szczecin, Poland</div>
+                    <div>Email: info@webz.com.pl</div>
+                    <div>Phone: +48 444 666 3333</div>
                   </div>
-                  <div class="wrapper d-block">
-                    <div class="wrapper d-flex justify-content-between">
-                      <p>Nama : </p>
-                      <p>
-                        <?php echo $_SESSION['namaPelanggan']; ?>
-                      </p>
-                    </div>
-                    <div class="wrapper d-flex justify-content-between">
-                      <p>Telepon :</p>
-                      <p>
-                        <?php echo $_SESSION['teleponPelanggan']; ?>
-                      </p>
-                    </div>
-                    <div class="wrapper d-flex justify-content-between">
-                      <p>Alamat : </p>
-                      <p>
-                        <?php echo $_SESSION['alamatPelanggan']; ?>
-                      </p>
-                    </div>
+                  <div class="col-lg-6">
+                    <h6>To:</h6>
+                    <div> <strong>Bob Mart</strong> </div>
+                    <div>Attn: Daniel Marek</div>
+                    <div>43-190 Mikolow, Poland</div>
+                    <div>Email: marek@daniel.com</div>
+                    <div>Phone: +48 123 456 789</div>
                   </div>
                 </div>
-                <hr>
-
-                <?php
-                ?>
-
-                <div class="wrapper d-flex justify-content-between mb-4 align-items-center">
-                  <h4>List pesanan</h4>
+                <div class="wrapper d-flex justify-content-end mt-4">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalTambahProduk">
+                    Buat Invoice
+                  </button>
                 </div>
-
-                <div class="wrapper d-flex justify-content-between">
-                  <p class="my-0">No Inv :</p>
-                  <p class="my-0">
-                    <?php ?>
-                  </p>
-                </div>
-                <div class="wrapper d-flex justify-content-between">
-                  <p class="">Kasir :</p>
-                  <p class="">
-                    <?php ?>
-                  </p>
-                </div>
-
-                <div class="wrapper justify-content-between align-items-center">
-                </div>
-
-                <hr>
-
-                <!-- list pesanan -->
-                <div class="wrapper overflow-auto" style="max-height:300px;">
-                  <table class="table" id="table-pembelian">
+                <div class="table-responsive" style="min-height:300px;">
+                  <table class="display w-100" id="daftar-pembelian">
                     <thead>
-                      <th>ID</th>
-                      <th>Nama</th>
-                      <th>Harga</th>
-                      <th>QTY</th>
-                      <th>Total</th>
-                      <th></th>
+                      <tr>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th class="center">Qty</th>
+                        <th class="right">Total</th>
+                      </tr>
                     </thead>
+                    <tbody>
+
+                    </tbody>
                   </table>
                 </div>
-
-                <!-- total -->
-                <div class="wrapper d-flex justify-content-between">
-                  <p>Total</p>
-                  <p>
-                  </p>
+                <hr>
+                <div class="row">
+                  <div class="col-lg-4 col-sm-5"> </div>
+                  <div class="col-lg-4 col-sm-5 ms-auto">
+                    <table class="table table-clear">
+                      <tbody>
+                        <tr>
+                          <td class="left"><strong>Subtotal</strong></td>
+                          <td class="right">$8.497,00</td>
+                        </tr>
+                        <tr>
+                          <td class="left"><strong>Discount (20%)</strong></td>
+                          <td class="right">$1,699,40</td>
+                        </tr>
+                        <tr>
+                          <td class="left"><strong>VAT (10%)</strong></td>
+                          <td class="right">$679,76</td>
+                        </tr>
+                        <tr>
+                          <td class="left"><strong>Total</strong></td>
+                          <td class="right"><strong>$7.477,36</strong><br>
+                            <strong>0.15050000 BTC</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-
-
-
-                <!-- submit -->
-                <form action="server/transaksi/simpan.php" method="post" onsubmit="return validateFormsimpan()">
-                  <button type="submit" class="btn btn-primary btn-lg w-100">Submit</button>
-                </form>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -840,6 +818,7 @@
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
 
   <!-- Datatable -->
   <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
@@ -854,104 +833,93 @@
   <script src="vendor/pickadate/picker.time.js"></script>
   <script src="vendor/pickadate/picker.date.js"></script>
 
-  <!-- controller -->
-  <script src="js/data/buat-invoice/listproduk.js"></script>
-  <script src="js/data/buat-invoice/tambahpembelian.js"></script>
-
   <script>
-    // <?php if (!isset($_SESSION['namaPelanggan'])) { ?>
-      //   Swal.fire({
-      //     title: 'Terjadi Kesalahan',
-      //     text: "Anda belum mengisi data pelanggan",
-      //     icon: 'error',
-      //     confirmButtonColor: '#3085d6',
-      //   }).then((result) => {
-      //     if (result.isConfirmed) {
-      //       window.location.href = 'invoice.php';
-      //     }
-      //   })
-      // <?php } ?>
-
     $(document).ready(function () {
-      var table = $('#listproduk').DataTable({
+      var table = $('#daftar-pembelian').DataTable({
         lengthChange: false,
+        paginate: false,
+        searching: false,
         info: false,
-        paging: false,
-        language: {
-          search: 'Search...',
-        },
-        ajax: "controller/invoice/daftarproduk.php",
-        "columns": [
-          { "data": "ID_Produk" },
-          { "data": "Nama_Produk" },
-          {
-            "data": "Harga_Produk"
-          },
-          {
-            "data": "Qty",
-            "render": function (data, type, row, meta) {
-              return '<input type="number" class="form-control form-control-sm qty-produk" value="1">';
-            }
-          },
-          {
-            "data": "ID_Produk",
-            "render": function (data, type, row, meta) {
-              return '<button class="btn btn-sm btn-primary btn-tambah"><i class="fas fa-cart-plus"></i></button>';
-            }
-          }
+        data: daftarpembelian,
+        columns: [
+          { data: 'nama' },
+          { data: 'harga' },
+          { data: 'qty' },
+          { data: 'total' }
         ]
       });
-    });
 
-    $(document).ready(function () {
-      $('#listproduk').on('click', '.btn-tambah', function () {
-        var rowData = [];
-        var currentRow = $(this).closest('tr');
+      var daftarpembelian = [];
 
-        // Mendapatkan nilai setiap sel pada baris yang diklik
-        currentRow.children('td').each(function () {
-          var cellData = $(this).text();
-          rowData.push(cellData);
+      $(function () {
+        $('#inputHargaProduk').maskMoney({
+          prefix: 'Rp ',
+          thousands: '.',
+          decimal: ',',
+          precision: 0
         });
+      });
 
-        // Mengambil nilai qty dari input pada sel keempat pada baris
-        var qty = currentRow.find('td:eq(3) input').val();
+      // Ketika opsi yang dipilih berubah
+      $('#inputIdProduk').change(function () {
+        var idProduk = $(this).val(); // Ambil nilai opsi yang dipilih
 
-        // Menyiapkan data yang akan ditambahkan ke dalam tabel daftar pembelian
-        var data = {
-          'id': rowData[0],
-          'nama': rowData[1],
-          'harga': rowData[2],
-          'qty': qty
-        };
-
-        console.log(data);
-
-        // Cek apakah barang sudah ada di tabel daftar pembelian
-        var sudahAda = false;
-        $('#table-pembelian tbody tr').each(function () {
-          if ($(this).find('td:eq(0)').text() === data.id) {
-            // Jika barang sudah ada, tambahkan qty
-            var existingQty = $(this).find('td:eq(3)').text();
-            var newQty = parseInt(existingQty) + parseInt(qty);
-            $(this).find('td:eq(3)').text(newQty);
-            sudahAda = true;
+        // Kirimkan data ke server menggunakan AJAX
+        $.ajax({
+          type: 'POST',
+          url: 'controller/buatinvoice/cariproduk.php', // Ganti dengan URL yang sesuai
+          data: { idProduk: idProduk },
+          dataType: 'json',
+          success: function (data) {
+            // Isi input dengan data yang diterima dari server
+            $('#inputNamaProduk').val(data.nama);
+            $('#inputHargaProduk').val(data.harga);
+            $('#inputHargaProduk').maskMoney('mask');
+            table.ajax.reload();
+          },
+          error: function (xhr, status, error) {
+            console.log(xhr.responseText);
           }
         });
+      });
 
-        // Jika barang belum ada, tambahkan ke dalam tabel daftar pembelian
-        if (!sudahAda) {
-          var rowHtml = '<tr><td>' + data.id + '</td><td>' + data.nama + '</td><td>' + data.harga + '</td><td>' + data.qty + '</td></tr>';
-          $('#table-pembelian tbody').append(rowHtml);
+      function updateTable() {
+        table.clear();
+        table.rows.add(daftarpembelian);
+        table.draw();
+      }
+
+      $('#inputQtyProduk').change(function () {
+        if ($("#inputQtyProduk").val() !== '') {
+          // Aktifkan tombol Lanjut
+          $('#btntambah').prop('disabled', false);
+        } else {
+          // Jika kosong, nonaktifkan tombol Lanjut
+          $('#btntambah').prop('disabled', true);
         }
       });
+
+      $('#btntambah').click(function () {
+        var idProduk = $('#inputIdProduk').val();
+        var namaProduk = $('#inputNamaProduk').val();
+        var hargaProduk = parseInt($('#inputHargaProduk').val());
+        var qtyProduk = $('#inputQtyProduk').val();
+        var total = hargaProduk * qtyProduk;
+
+
+        var produk = {
+          id: idProduk,
+          nama: namaProduk,
+          harga: hargaProduk,
+          qty: parseInt(qtyProduk),
+          total: total
+        };
+      });
+
     });
-
-
-
-
-
   </script>
+
+  <?php include 'modal/buatinvoice.php'; ?>
 </body>
 
 </html>
