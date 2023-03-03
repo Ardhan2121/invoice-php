@@ -4,6 +4,7 @@
 <?php
 session_start();
 $_SESSION['hal'] ='Karyawan';
+include("partials/logstate.php");
 ?>
 
 <head>

@@ -4,8 +4,11 @@ if(isset($_POST["masuk"])){
     $username = $_POST["username"];
     $password = md5($_POST["password"]);
     $paslen = $_POST['password'];
+    $kon_pas = $_POST['kon_password'];
     if(strlen($paslen) <= 5){
-        echo "<script>alert('karakter harus lebih dari 6')</script>";
+        echo "<script>alert('Password harus lebih dari 6 Karakter')</script>";
+    }elseif ($kon_pas != $paslen){
+        echo "<script>alert('Password tidak saama')</script>";
     }else{
         if (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM logn WHERE username='$username'")) > 0) {
             $sama = true;
@@ -59,17 +62,22 @@ if(isset($_POST["masuk"])){
                                     <form action="" method="post">
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Username</strong></label>
-                                            <input type="text" class="form-control" name="username" placeholder="Username">
+                                            <input type="text" class="form-control" name="username" placeholder="Username" autocomplete="off">
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
-                                            <input type="password" class="form-control" id="input" name="password" placeholder="Password">
+                                            <input type="password" class="form-control" id="input1" name="password" placeholder="Password">
+                                          
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="mb-1"><strong>Konfirmasi Password</strong></label>
+                                            <input type="password" class="form-control" id="input2" name="kon_password" placeholder="komfirmasip password">
                                           
                                         </div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
                                             <div class="mb-3">
                                                <div class="form-check custom-checkbox ms-1">
-													<input type="checkbox" class="form-check-input" id="basic_checkbox_1" onclick="check()">
+													<input type="checkbox" class="form-check-input" id="basic_checkbox_1">
 													<label class="form-check-label" for="basic_checkbox_1">Tampilkan Password</label>
 												</div>
                                             </div>
@@ -96,7 +104,7 @@ if(isset($_POST["masuk"])){
 ***********************************-->
 <!-- Required vendors -->
 
-<script src="js/showpassword.js"></script>
+<script src="js/konshowpas.js"></script>
 <script src="vendor/global/global.min.js"></script>
 <script src="js/custom.min.js"></script>
 <script src="js/dlabnav-init.js"></script>
@@ -143,6 +151,7 @@ if(isset($_POST["masuk"])){
             tapToDismiss: !1
         })
         <?php endif; ?>
+        
     </script>
 </body>
 </html>

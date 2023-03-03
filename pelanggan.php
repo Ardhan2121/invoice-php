@@ -3,6 +3,7 @@
 
 <?php
 session_start();
+include("partials/logstate.php");
 $_SESSION['hal'] ='Pelanggan';
 ?>
 

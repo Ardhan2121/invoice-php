@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php session_start();
+include("partials/logstate.php");
 $_SESSION['hal'] = "Dashboard";
+
 ?>
 
 <head>
