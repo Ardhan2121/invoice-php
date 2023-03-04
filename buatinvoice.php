@@ -770,9 +770,29 @@ $_SESSION['hal'] = 'Invoice';
                           <td class="left"><strong>Subtotal</strong></td>
                           <td class="text-end" id="subtotal">$8.497,00</td>
                         </tr>
+                        <tr>
+                          <td class="left"><strong>Diskon</strong></td>
+                          <td class="text-end input-group">
+                            <input class="form-control" type="number" id="diskon" value="0" min="0">
+                            <span class="input-group-text">%</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="left"><strong>Ppn</strong></td>
+                          <td class="text-end input-group">
+                            <input class="form-control" type="number" id="pajak" value="0" min="0">
+                            <span class="input-group-text">%</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td class="left"><strong>Total</strong></td>
+                          <td class="text-end" id="total"><strong>Rp20.000</strong>
+                          </td>
+                        </tr>
                       </tbody>
                     </table>
-                    <button class="btn btn-square btn-outline-primary w-100" id="buat-invoice" disabled>Buat</button>
+                    <button class="btn btn-square btn-lg btn-outline-primary w-100" id="buat-invoice"
+                      disabled>Buat</button>
                   </div>
                 </div>
               </div>
