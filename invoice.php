@@ -4,7 +4,7 @@
 <?php
 session_start();
 include("partials/logstate.php");
-$_SESSION['hal'] ='Invoice';
+$_SESSION['hal'] = 'Invoice';
 ?>
 
 <head>
@@ -39,6 +39,10 @@ $_SESSION['hal'] ='Invoice';
   <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   <link href="vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet" />
   <link href="css/style.css" rel="stylesheet" />
+
+  <!-- Toastr -->
+  <link rel="stylesheet" href="vendor/toastr/css/toastr.min.css">
+
 </head>
 
 <body>
@@ -780,6 +784,8 @@ $_SESSION['hal'] ='Invoice';
   <script src="vendor/pickadate/picker.time.js"></script>
   <script src="vendor/pickadate/picker.date.js"></script>
 
+  <script src="vendor/toastr/js/toastr.min.js"></script>
+
   <script>
     $(document).ready(function () {
       var table = $('#tabel').DataTable({
@@ -853,6 +859,9 @@ $_SESSION['hal'] ='Invoice';
         var tanggalInvoice = $('#TanggalInvoice').val();
         var tanggalJatuhTempo = $('#TanggalJatuhTempo').val();
 
+        console.log(tanggalInvoice);
+        console.log(tanggalJatuhTempo);
+
         // Kirim data ke script PHP menggunakan Ajax
         $.ajax({
           type: 'POST',
@@ -862,6 +871,7 @@ $_SESSION['hal'] ='Invoice';
             tanggalJatuhTempo: tanggalJatuhTempo
           },
           success: function (response) {
+            alert(response);
             $('#modalPilihPelanggan').modal('show');
           },
           error: function (xhr, status, error) {

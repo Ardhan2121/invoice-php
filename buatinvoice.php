@@ -38,7 +38,15 @@ $_SESSION['hal'] = 'Invoice';
   <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   <link href="vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet" />
   <link href="css/style.css" rel="stylesheet" />
+
+  <!-- Toastr -->
+  <link rel="stylesheet" href="vendor/toastr/css/toastr.min.css">
+
 </head>
+
+<?php if (!isset($_SESSION['pelanggan'])) {
+  header("Location: 500.html");
+} ?>
 
 <body>
   <!--*******************
@@ -702,11 +710,13 @@ $_SESSION['hal'] = 'Invoice';
           <div class="col-lg-12">
 
             <div class="card mt-3">
-              <div class="card-header"> Invoice <strong>01/01/01/2018</strong> <span class="float-end">
+              <div class="card-header"> Invoice <strong>
+                  <?php echo $_SESSION['tanggalInvoice']; ?>
+                </strong> <span class="float-end">
                   <strong>Status:</strong> Pending</span> </div>
               <div class="card-body">
                 <div class="row mb-5">
-                  <div class="col-lg-6">
+                  <div class="col-md-6">
                     <h6>From:</h6>
                     <div> <strong>Webz Poland</strong> </div>
                     <div>Madalinskiego 8</div>
@@ -714,13 +724,20 @@ $_SESSION['hal'] = 'Invoice';
                     <div>Email: info@webz.com.pl</div>
                     <div>Phone: +48 444 666 3333</div>
                   </div>
-                  <div class="col-lg-6">
+                  <div class="col-md-6 text-end">
                     <h6>To:</h6>
-                    <div> <strong>Bob Mart</strong> </div>
-                    <div>Attn: Daniel Marek</div>
-                    <div>43-190 Mikolow, Poland</div>
-                    <div>Email: marek@daniel.com</div>
-                    <div>Phone: +48 123 456 789</div>
+                    <div> <strong>
+                        <?php echo $_SESSION['pelanggan']['nama']; ?>
+                      </strong> </div>
+                    <div>Alamat :
+                      <?php echo $_SESSION['pelanggan']['alamat']; ?>
+                    </div>
+                    <div>Email :
+                      <?php echo $_SESSION['pelanggan']['email']; ?>
+                    </div>
+                    <div>Telepon :
+                      <?php echo $_SESSION['pelanggan']['telepon']; ?>
+                    </div>
                   </div>
                 </div>
                 <div class="wrapper d-flex justify-content-end mt-4">
@@ -730,18 +747,15 @@ $_SESSION['hal'] = 'Invoice';
                   </button>
                 </div>
                 <div class="table-responsive" style="min-height:300px;">
-                  <table class="display w-100" id="daftar-pembelian">
+                  <table id="daftar-pembelian" class="display w-100">
                     <thead>
                       <tr>
-                        <th>Produk</th>
+                        <th>Nama Produk</th>
                         <th>Harga</th>
-                        <th class="center">Qty</th>
-                        <th class="right">Total</th>
+                        <th>Qty</th>
+                        <th>Total</th>
                       </tr>
                     </thead>
-                    <tbody>
-
-                    </tbody>
                   </table>
                 </div>
                 <hr>
@@ -752,24 +766,11 @@ $_SESSION['hal'] = 'Invoice';
                       <tbody>
                         <tr>
                           <td class="left"><strong>Subtotal</strong></td>
-                          <td class="right">$8.497,00</td>
-                        </tr>
-                        <tr>
-                          <td class="left"><strong>Discount (20%)</strong></td>
-                          <td class="right">$1,699,40</td>
-                        </tr>
-                        <tr>
-                          <td class="left"><strong>VAT (10%)</strong></td>
-                          <td class="right">$679,76</td>
-                        </tr>
-                        <tr>
-                          <td class="left"><strong>Total</strong></td>
-                          <td class="right"><strong>$7.477,36</strong><br>
-                            <strong>0.15050000 BTC</strong>
-                          </td>
+                          <td id="subtotal">$8.497,00</td>
                         </tr>
                       </tbody>
                     </table>
+                    <button class="btn btn-square btn-outline-primary w-100">Buat</button>
                   </div>
                 </div>
               </div>
@@ -834,27 +835,58 @@ $_SESSION['hal'] = 'Invoice';
   <script src="vendor/pickadate/picker.time.js"></script>
   <script src="vendor/pickadate/picker.date.js"></script>
 
+  <script src="vendor/toastr/js/toastr.min.js"></script>
+
+
   <script>
     $(document).ready(function () {
+      updateSubtotal()
       var table = $('#daftar-pembelian').DataTable({
-        lengthChange: false,
-        paginate: false,
         searching: false,
+        paging: false,
         info: false,
-        data: daftarpembelian,
+        lengthChange: false,
+
+        ajax: {
+          url: 'controller/buatinvoice/daftarpembelian.php',
+          dataSrc: ''
+        },
         columns: [
           { data: 'nama' },
-          { data: 'harga' },
+          {
+            data: 'harga',
+            render: function (data) {
+              return formatAngka(data);
+            }
+          },
           { data: 'qty' },
-          { data: 'total' }
+          {
+            data: 'total',
+            render: function (data) {
+              return formatAngka(data);
+            }
+          }
         ]
       });
-
-      var daftarpembelian = [];
 
       function formatAngka(angka) {
         return $.number(angka, 0, ',', '.');
       }
+
+      function updateSubtotal() {
+        // Kirim permintaan AJAX untuk mengambil nilai subtotal terbaru
+        $.ajax({
+          url: "controller/buatinvoice/subtotal.php",
+          success: function (response) {
+            // Update nilai subtotal dengan nilai yang diperbarui
+            $("#subtotal").html(formatAngka(response));
+          },
+          error: function (xhr, status, error) {
+            console.log("Terjadi kesalahan: " + error);
+          }
+        });
+      }
+
 
 
       // Ketika opsi yang dipilih berubah
@@ -870,7 +902,7 @@ $_SESSION['hal'] = 'Invoice';
           success: function (data) {
             // Isi input dengan data yang diterima dari server
             $('#inputNamaProduk').val(data.nama);
-            $('#inputHargaProduk').val(data.harga);
+            $('#inputHargaProduk').val(formatAngka(data.harga));
           },
           error: function (xhr, status, error) {
             console.log(xhr.responseText);
@@ -891,20 +923,54 @@ $_SESSION['hal'] = 'Invoice';
       $('#btntambah').click(function () {
         var idProduk = $('#inputIdProduk').val();
         var namaProduk = $('#inputNamaProduk').val();
-        var hargaProduk = formatAngka($('#inputHargaProduk').val());
-        var qtyProduk = $('#inputQtyProduk').val();
+        var hargaProduk = parseInt($('#inputHargaProduk').val().replace(".", ""));
+        var qtyProduk = parseInt($('#inputQtyProduk').val());
         var total = hargaProduk * qtyProduk;
 
         var produk = {
           id: idProduk,
           nama: namaProduk,
           harga: hargaProduk,
-          qty: parseInt(qtyProduk),
+          qty: qtyProduk,
           total: total
         };
 
-        console.log(produk);
+        // Send the product data to PHP API using AJAX
+        $.ajax({
+          url: 'controller/buatinvoice/daftarpembelian.php',
+          method: 'POST',
+          data: {
+            produk: produk
+          },
+          success: function (response) {
+            $('#daftar-pembelian').DataTable().ajax.reload();
+            updateSubtotal();
+            toastr.success("Berhasil Menambah Barang", "Success", {
+              positionClass: "toast-top-right",
+              timeOut: 5e3,
+              closeButton: !0,
+              debug: !1,
+              newestOnTop: !0,
+              progressBar: !0,
+              preventDuplicates: !0,
+              onclick: null,
+              showDuration: "300",
+              hideDuration: "1000",
+              extendedTimeOut: "1000",
+              showEasing: "swing",
+              hideEasing: "linear",
+              showMethod: "fadeIn",
+              hideMethod: "fadeOut",
+              tapToDismiss: !1
+            });
+          },
+          error: function (xhr, status, error) {
+            // Handle error response
+            console.log(error);
+          }
+        });
       });
+
 
     });
   </script>
