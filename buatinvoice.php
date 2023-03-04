@@ -750,10 +750,12 @@ $_SESSION['hal'] = 'Invoice';
                   <table id="daftar-pembelian" class="display w-100">
                     <thead>
                       <tr>
+                        <th>ID</th>
                         <th>Nama Produk</th>
                         <th>Harga</th>
                         <th>Qty</th>
                         <th>Total</th>
+                        <th></th>
                       </tr>
                     </thead>
                   </table>
@@ -766,11 +768,11 @@ $_SESSION['hal'] = 'Invoice';
                       <tbody>
                         <tr>
                           <td class="left"><strong>Subtotal</strong></td>
-                          <td id="subtotal">$8.497,00</td>
+                          <td class="text-end" id="subtotal">$8.497,00</td>
                         </tr>
                       </tbody>
                     </table>
-                    <button class="btn btn-square btn-outline-primary w-100">Buat</button>
+                    <button class="btn btn-square btn-outline-primary w-100" id="buat-invoice" disabled>Buat</button>
                   </div>
                 </div>
               </div>
@@ -846,12 +848,54 @@ $_SESSION['hal'] = 'Invoice';
         paging: false,
         info: false,
         lengthChange: false,
+        // konfigurasi DataTable lainnya
+        "drawCallback": function (settings) {
+          var api = this.api();
+          var rows = api.rows({ page: 'current' }).nodes();
+
+          if (rows.length === 0) {
+            // datatable kosong, disable tombol
+            $('#buat-invoice').prop('disabled', true);
+          } else {
+            // datatable tidak kosong, enable tombol
+            $('#buat-invoice').prop('disabled', false);
+            // hapus pesan datatable kosong (jika ada)
+          }
+        },
+
+        columnDefs: [
+          {
+            targets: [0], // index kolom id
+            visible: false, // menyembunyikan kolom id
+          },
+          {
+            width: '55%',
+            targets: [1]
+          },
+          {
+            width: '10%',
+            targets: [2]
+          },
+          {
+            width: '10%',
+            targets: [3]
+          },
+          {
+            width: '10%',
+            targets: [4]
+          },
+          {
+            width: '10%',
+            targets: [5]
+          }
+        ],
 
         ajax: {
           url: 'controller/buatinvoice/daftarpembelian.php',
           dataSrc: ''
         },
         columns: [
+          { data: 'id', className: 'text-center' }, // tambahan kolom id
           { data: 'nama' },
           {
             data: 'harga',
@@ -865,9 +909,41 @@ $_SESSION['hal'] = 'Invoice';
             render: function (data) {
               return formatAngka(data);
             }
+          },
+          {
+            data: null,
+            className: 'text-center',
+            render: function (data) {
+              return '<button class="btn-delete btn btn-danger" data-id="' + data.id + '"><i class="fa fa-trash"></i></button>';
+            }
           }
         ]
       });
+
+      table.on('click', '.btn-delete', function () {
+        var row = $(this).closest('tr');
+        var productId = $(this).data('id');
+        console.log(productId);
+
+        // lakukan request ajax untuk menghapus produk dengan id tertentu
+        $.ajax({
+          type: 'POST',
+          url: 'controller/buatinvoice/daftarpembelian.php',
+          data: { hapus_produk: productId },
+          success: function (response) {
+            // Refresh data table
+            $('#table-cart').DataTable().ajax.reload();
+          },
+          error: function (XMLHttpRequest, textStatus, errorThrown) {
+            console.log('Error : ' + errorThrown);
+          }
+        });
+
+
+        // hapus baris dari datatable
+        table.row(row).remove().draw(false);
+      });
+
 
       function formatAngka(angka) {
         return $.number(angka, 0, ',', '.');
@@ -886,6 +962,36 @@ $_SESSION['hal'] = 'Invoice';
           }
         });
       }
+
+      $('#buat-invoice').click(function () {
+        // Ambil data subtotal dari session cart
+        var subtotal = '<?php echo isset($_SESSION["subtotal"]) ? $_SESSION["subtotal"] : "0"; ?>';
+        // Cek apakah session cart tidak kosong
+        if (subtotal > 0) {
+          // Kirim data subtotal menggunakan Ajax
+          $.ajax({
+            url: 'buat-invoice.php',
+            method: 'POST',
+            data: {
+              subtotal: subtotal
+            },
+            success: function (response) {
+              // Tampilkan pesan sukses
+              alert('Invoice berhasil dibuat!');
+              // Refresh halaman
+              location.reload();
+            },
+            error: function (xhr, status, error) {
+              // Tampilkan pesan error
+              alert('Terjadi kesalahan: ' + error);
+            }
+          });
+        } else {
+          // Tampilkan pesan bahwa session cart kosong
+          alert('Session cart kosong!');
+        }
+      });
+
 
 
 
