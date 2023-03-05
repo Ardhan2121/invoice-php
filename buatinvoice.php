@@ -762,13 +762,9 @@ $_SESSION['hal'] = 'Invoice';
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-lg-4 col-sm-5">
+                  <div class="col-md-6">
                     <table class="table table-clear">
                       <tbody>
-                        <tr>
-                          <td class="left"><strong>Subtotal</strong></td>
-                          <td class="text-end" id="subtotal">$8.497,00</td>
-                        </tr>
                         <tr>
                           <td class="left"><strong>Diskon</strong></td>
                           <td class="text-end input-group">
@@ -783,17 +779,27 @@ $_SESSION['hal'] = 'Invoice';
                             <span class="input-group-text">%</span>
                           </td>
                         </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md-6 ms-auto">
+                    <table class="table table-clear">
+                      <tbody>
+                        <tr>
+                          <td class="left"><strong>Subtotal</strong></td>
+                          <td class="text-end" id="subtotal">0</td>
+                        </tr>
                         <tr>
                           <td class="left"><strong>Total</strong></td>
-                          <td class="text-end" id="total"><strong>Rp20.000</strong>
+                          <td class="text-end" id="total"><strong>0</strong>
                           </td>
                         </tr>
                       </tbody>
                     </table>
-                  </div>
-                  <div class="col-lg-4 col-sm-5 ms-auto">
-                    <button class="btn btn-square btn-lg btn-outline-primary w-100" id="buat-invoice"
-                      disabled>Buat</button>
+                    <div class="wrapper d-flex justify-content-end">
+                      <button class="ms-auto btn btn-primary" id="buat-invoice" disabled>Buat Invoice<span
+                          class="btn-icon-start text-primary"><i class="far fa-plus-square"></i></span></button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1031,17 +1037,20 @@ $_SESSION['hal'] = 'Invoice';
           },
           success: function (response) {
             Swal.fire({
-              title: 'Are you sure?',
-              text: "You won't be able to revert this!",
-              icon: 'warning',
+              title: 'Berhasil',
+              text: "Mau di Print atau ga",
+              icon: 'success',
               showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!'
+              confirmButtonText: 'Print Dong!',
+              cancelButtonText: "G"
             }).then((result) => {
               if (result.isConfirmed) {
                 var url = "detailinvoice.php?id=" + response;
-                window.open(url, "_blank", "width=800,height=600");
+                window.open(url, "_blank");
+                window.location.href = "invoice.php";
+              }
+              else if (result.isConfirmed == 0){
+                window.location.href = "invoice.php";
               }
             })
           },
