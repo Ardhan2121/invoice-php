@@ -784,6 +784,9 @@ $_SESSION['hal'] = 'Invoice';
   <script src="vendor/pickadate/picker.time.js"></script>
   <script src="vendor/pickadate/picker.date.js"></script>
 
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
+
   <script src="vendor/toastr/js/toastr.min.js"></script>
 
   <script>
@@ -796,7 +799,29 @@ $_SESSION['hal'] = 'Invoice';
             next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
             previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
           }
-        }
+        },
+        ajax: "controller/invoice/listinvoice.php",
+        columns: [
+          { "data": "ID_Pelanggan" },
+          { "data": "Nama_Pelanggan" },
+          { "data": "Tanggal_Invoice" },
+          { "data": "Tanggal_JatuhTempo" },
+          {
+            data: 'Total',
+            render: function (data) {
+              return formatAngka(data);
+            }
+          },
+          {
+            // Menambahkan kolom untuk tombol
+            data: null,
+            render: function (data) {
+              // Mengambil ID dari kolom pertama
+              var id = data['ID_Pelanggan'];
+              return '<button class="btn btn-primary" data-id="' + id + '">Detail</button>';
+            }
+          }
+        ]
       });
 
       // Ketika opsi yang dipilih berubah
@@ -853,6 +878,10 @@ $_SESSION['hal'] = 'Invoice';
         });
         $('#modalListPembelian').modal('show');
       });
+
+      function formatAngka(angka) {
+        return $.number(angka, 0, ',', '.');
+      }
 
       $('#btnLanjut').click(function () {
         // Ambil nilai dari input pada form Invoice

@@ -762,8 +762,7 @@ $_SESSION['hal'] = 'Invoice';
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-lg-4 col-sm-5"> </div>
-                  <div class="col-lg-4 col-sm-5 ms-auto">
+                  <div class="col-lg-4 col-sm-5">
                     <table class="table table-clear">
                       <tbody>
                         <tr>
@@ -791,6 +790,8 @@ $_SESSION['hal'] = 'Invoice';
                         </tr>
                       </tbody>
                     </table>
+                  </div>
+                  <div class="col-lg-4 col-sm-5 ms-auto">
                     <button class="btn btn-square btn-lg btn-outline-primary w-100" id="buat-invoice"
                       disabled>Buat</button>
                   </div>
@@ -953,6 +954,7 @@ $_SESSION['hal'] = 'Invoice';
           success: function (response) {
             // Refresh data table
             $('#table-cart').DataTable().ajax.reload();
+            updateSubtotal();
           },
           error: function (XMLHttpRequest, textStatus, errorThrown) {
             console.log('Error : ' + errorThrown);
@@ -976,6 +978,7 @@ $_SESSION['hal'] = 'Invoice';
           success: function (response) {
             // Update nilai subtotal dengan nilai yang diperbarui
             $("#subtotal").html(formatAngka(response));
+            hitungTotal();
           },
           error: function (xhr, status, error) {
             console.log("Terjadi kesalahan: " + error);
@@ -983,33 +986,70 @@ $_SESSION['hal'] = 'Invoice';
         });
       }
 
+      function hitungTotal() {
+        // Menghitung total
+        var subtotal = parseInt($("#subtotal").text().replace(/\./g, ""));
+        var diskon = parseInt($("#diskon").val());
+        var ppn = parseInt($("#pajak").val());
+
+
+        // Cek nilai diskon
+        if (isNaN(diskon) || diskon === "") {
+          diskon = 0;
+        } else if (diskon > 100) {
+          diskon = 100;
+        }
+
+        // Cek nilai ppn
+        if (isNaN(ppn) || ppn === "") {
+          ppn = 0;
+        } else if (ppn > 100) {
+          ppn = 100;
+        }
+
+        var total = subtotal - (subtotal * diskon / 100) + (subtotal * ppn / 100);
+
+        // Menampilkan hasil perhitungan di elemen outputTotal
+        $("#total").text(formatAngka(total));
+      }
+
       $('#buat-invoice').click(function () {
         // Ambil data subtotal dari session cart
-        var subtotal = '<?php echo isset($_SESSION["subtotal"]) ? $_SESSION["subtotal"] : "0"; ?>';
-        // Cek apakah session cart tidak kosong
-        if (subtotal > 0) {
-          // Kirim data subtotal menggunakan Ajax
-          $.ajax({
-            url: 'buat-invoice.php',
-            method: 'POST',
-            data: {
-              subtotal: subtotal
-            },
-            success: function (response) {
-              // Tampilkan pesan sukses
-              alert('Invoice berhasil dibuat!');
-              // Refresh halaman
-              location.reload();
-            },
-            error: function (xhr, status, error) {
-              // Tampilkan pesan error
-              alert('Terjadi kesalahan: ' + error);
-            }
-          });
-        } else {
-          // Tampilkan pesan bahwa session cart kosong
-          alert('Session cart kosong!');
-        }
+        var subtotal = parseInt($('#subtotal').text().replace(".", ""));
+        var diskon = parseInt($("#diskon").val());
+        var pajak = parseInt($("#pajak").val());
+        var total = subtotal - (subtotal * diskon / 100) + (subtotal * pajak / 100);
+        // Kirim data subtotal menggunakan Ajax
+        $.ajax({
+          url: 'controller/buatinvoice/simpaninvoice.php',
+          method: 'POST',
+          data: {
+            subtotal: subtotal,
+            diskon: diskon,
+            pajak: pajak,
+            total: total
+          },
+          success: function (response) {
+            Swal.fire({
+              title: 'Are you sure?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                var url = "detailinvoice.php?id=" + response;
+                window.open(url, "_blank", "width=800,height=600");
+              }
+            })
+          },
+          error: function (xhr, status, error) {
+            // Tampilkan pesan error
+            alert('Terjadi kesalahan: ' + error);
+          }
+        });
       });
 
 
@@ -1097,7 +1137,17 @@ $_SESSION['hal'] = 'Invoice';
         });
       });
 
+      $("#diskon, #pajak").on("input", function () {
+        hitungTotal();
+      });
 
+      $('#diskon, #pajak').on('keypress keydown keyup', function (event) {
+        var currentValue = $(this).val();
+        if (event.which != 8 && currentValue > 100) {
+          event.preventDefault();
+          $(this).val(100);
+        }
+      });
     });
   </script>
 

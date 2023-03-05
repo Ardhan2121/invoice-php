@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php session_start();
+$_SESSION['hal'] = "Dashboard";
+?>
 
 <head>
   <meta charset="utf-8" />

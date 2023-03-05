@@ -1064,8 +1064,7 @@ $_SESSION['hal'] = "Dashboard";
           }
         });
       });
-
-
+      
     });
   </script>
   <?php include 'modal/pelanggan.php'; ?>
