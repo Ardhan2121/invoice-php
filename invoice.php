@@ -715,7 +715,7 @@ $_SESSION['hal'] = 'Invoice';
             <div class="table-responsive p-0">
               <table class="display w-100" id="tabel">
                 <thead>
-                  <th>ID</th>
+                  <th>ID Invoice</th>
                   <th>Nama Pelanggan</th>
                   <th>Tanggal Invoice</th>
                   <th>Tanggal Jatuh Tempo</th>
@@ -802,7 +802,7 @@ $_SESSION['hal'] = 'Invoice';
         },
         ajax: "controller/invoice/listinvoice.php",
         columns: [
-          { "data": "ID_Pelanggan" },
+          { "data": "ID_Invoice" },
           { "data": "Nama_Pelanggan" },
           { "data": "Tanggal_Invoice" },
           { "data": "Tanggal_JatuhTempo" },
@@ -817,8 +817,8 @@ $_SESSION['hal'] = 'Invoice';
             data: null,
             render: function (data) {
               // Mengambil ID dari kolom pertama
-              var id = data['ID_Pelanggan'];
-              return '<button class="btn btn-primary" data-id="' + id + '">Detail</button>';
+              var id = data['ID_Invoice'];
+              return '<a class="btn btn-primary" href="detailinvoice.php?id=' + id + '">Detail</button>';
             }
           }
         ]
