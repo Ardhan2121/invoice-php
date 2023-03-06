@@ -3,6 +3,7 @@
 
 <?php
 session_start();
+date_default_timezone_set('Asia/Jakarta');
 include("partials/logstate.php");
 $_SESSION['hal'] = 'Invoice';
 ?>

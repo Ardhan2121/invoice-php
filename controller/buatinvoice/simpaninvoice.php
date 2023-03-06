@@ -52,11 +52,11 @@ if (isset($subtotal)) {
 
 
 // Hapus data dari session cart setelah berhasil disimpan ke dalam tabel
-// unset($_SESSION['cart']);
-// unset($_SESSION['tanggalInvoice']);
-// unset($_SESSION['tanggalJatuhTempo']);
-// unset($_SESSION['IdInvoice']);
-// unset($_SESSION['pelanggan']);
+unset($_SESSION['cart']);
+unset($_SESSION['tanggalInvoice']);
+unset($_SESSION['tanggalJatuhTempo']);
+unset($_SESSION['IdInvoice']);
+unset($_SESSION['pelanggan']);
 
 
 echo $id_invoice;

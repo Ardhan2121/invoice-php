@@ -756,6 +756,8 @@ $_SESSION['hal'] = "Dashboard";
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>F
 
   <!-- Datatable -->
   <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
@@ -766,37 +768,58 @@ $_SESSION['hal'] = "Dashboard";
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
   <script>
-
-    var table = $('#tabel').DataTable({
-      lengthChange: false,
-      language: {
-        search: 'Search...',
-        paginate: {
-          next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-          previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
-        }
-      },
-      ajax: "controller/produk/listproduk.php",
-      columns: [
-        { "data": "ID_Produk" },
-        { "data": "Nama_Produk" },
-        { "data": "Harga_Produk" },
-        {
-          data: null,
-          render: function (data, type, row) {
-            // Tambahkan tombol Edit
-            var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Produk + '" data-nama="' + row.Nama_Produk + '" data-harga="' + row.Harga_Produk + '">Edit</button>';
-            // Tambahkan tombol Delete
-            var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-id="' + row.ID_Produk + '">Delete</button>';
-            // Gabungkan tombol Edit dan Delete
-            return editButton + ' ' + deleteButton;
-          }
-        }
-
-      ]
-    });
-
     $(document).ready(function () {
+      var table = $('#tabel').DataTable({
+        lengthChange: false,
+        language: {
+          search: 'Search...',
+          paginate: {
+            next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
+            previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
+          }
+        },
+        ajax: "controller/produk/listproduk.php",
+        columns: [
+          { "data": "ID_Produk" },
+          { "data": "Nama_Produk" },
+          {
+            data: 'Harga_Produk',
+            render: function (data) {
+              return formatAngka(data);
+            }
+          },
+          {
+            data: null,
+            render: function (data, type, row) {
+              // Tambahkan tombol Edit
+              var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Produk + '" data-nama="' + row.Nama_Produk + '" data-harga="' + row.Harga_Produk + '">Edit</button>';
+              // Tambahkan tombol Delete
+              var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-id="' + row.ID_Produk + '">Delete</button>';
+              // Gabungkan tombol Edit dan Delete
+              return editButton + ' ' + deleteButton;
+            }
+          }
+        ],
+        columnDefs: [
+          {
+            targets: [0], // index kolom id
+            width: '5%'
+          },
+          {
+            width: '60%',
+            targets: [1]
+          },
+          {
+            width: '15%',
+            targets: [2]
+          },
+          {
+            width: '20%',
+            targets: [3]
+          }
+        ],
+      });
+
       // Saat form submit, kirim data ke API PHP dengan AJAX
       $('#form-tambah-produk').submit(function (event) {
         // Mencegah form submit secara default
@@ -955,8 +978,9 @@ $_SESSION['hal'] = "Dashboard";
           }
         });
       });
-
-
+      function formatAngka(angka) {
+        return $.number(angka, 0, ',', '.');
+      }
     });
   </script>
   <?php include 'modal/produk.php'; ?>

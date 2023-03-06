@@ -741,9 +741,9 @@ $_SESSION['hal'] = 'Invoice';
                   </div>
                 </div>
                 <div class="wrapper d-flex justify-content-end mt-4">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                  <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
                     data-bs-target="#modalTambahProduk">
-                    Buat Invoice
+                    Tambah Produk
                   </button>
                 </div>
                 <div class="table-responsive" style="min-height:300px;">
@@ -797,8 +797,8 @@ $_SESSION['hal'] = 'Invoice';
                       </tbody>
                     </table>
                     <div class="wrapper d-flex justify-content-end">
-                      <button class="ms-auto btn btn-primary" id="buat-invoice" disabled>Buat Invoice<span
-                          class="btn-icon-start text-primary"><i class="far fa-plus-square"></i></span></button>
+                      <button class="ms-auto btn btn-dark mt-3" id="buat-invoice" disabled>Buat Invoice<span
+                          class="btn-icon-start text-dark"><i class="far fa-plus-square"></i></span></button>
                     </div>
                   </div>
                 </div>

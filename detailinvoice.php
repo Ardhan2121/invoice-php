@@ -1,246 +1,192 @@
-<?php
-ob_start();
-require 'controller/koneksi.php';
-$id = $_GET['id'];
-
-//query untuk mengambil data invoice dan pelanggan
-$query = "SELECT * FROM invoice JOIN pelanggan ON invoice.id_pelanggan = pelanggan.id_pelanggan WHERE invoice.id_invoice = $id";
-$data = mysqli_query($conn, $query);
-$invoice = mysqli_fetch_assoc($data);
-
-//query untuk mengambil data detail invoice
-$query = "SELECT detail_invoice.*, produk.*, detail_invoice.Jumlah_Produk * detail_invoice.Harga_Jual AS Total_Harga
-FROM detail_invoice
-JOIN produk ON detail_invoice.ID_Produk = produk.ID_Produk
-WHERE detail_invoice.id_invoice = $id;
-";
-$data = mysqli_query($conn, $query);
-
-function rupiah($number)
-{
-    $rupiah = "Rp " . number_format($number, 0, ',', '.');
-    return $rupiah;
-}
-
-
-?>
 <!DOCTYPE html>
-<!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>A simple, clean, and responsive HTML invoice template</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+    <meta name="robots" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Fillow : Fillow Saas Admin  Bootstrap 5 Template">
+    <meta property="og:title" content="Fillow : Fillow Saas Admin  Bootstrap 5 Template">
+    <meta property="og:description" content="Fillow : Fillow Saas Admin  Bootstrap 5 Template">
+    <meta property="og:image" content="https://fillow.dexignlab.com/xhtml/social-image.png">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>Admin Dashboard</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+    <link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <style>
-        .invoice-box {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border: 1px solid #eee;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-            font-size: 16px;
-            line-height: 24px;
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;
+        .ukuran {
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
         }
-
-        .invoice-box table {
-            width: 100%;
-            line-height: inherit;
-            text-align: left;
+        .warna-biru {
+            background-color: darkblue;
         }
-
-        .invoice-box table td {
-            padding: 5px;
-            vertical-align: top;
-        }
-
-        .invoice-box table tr td:nth-child(2) {
-            text-align: right;
-        }
-
-        .invoice-box table tr.top table td {
-            padding-bottom: 20px;
-        }
-
-        .invoice-box table tr.top table td.title {
-            font-size: 45px;
-            line-height: 45px;
-            color: #333;
-        }
-
-        .invoice-box table tr.information table td {
-            padding-bottom: 40px;
-        }
-
-        .invoice-box table tr.heading td {
-            background: #eee;
-            border-bottom: 1px solid #ddd;
-            font-weight: bold;
-        }
-
-        .invoice-box table tr.details td {
-            padding-bottom: 20px;
-        }
-
-        .invoice-box table tr.item td {
-            border-bottom: 1px solid #eee;
-        }
-
-        .invoice-box table tr.item.last td {
-            border-bottom: none;
-        }
-
-        .invoice-box table tr.total td:nth-child(2) {
-            border-top: 2px solid #eee;
-            font-weight: bold;
-        }
-
-        @media only screen and (max-width: 600px) {
-            .invoice-box table tr.top table td {
+        @media print {
+            .ukuran {
+                margin: 0;
                 width: 100%;
-                display: block;
-                text-align: center;
             }
-
-            .invoice-box table tr.information table td {
-                width: 100%;
-                display: block;
-                text-align: center;
+            body * {
+                visibility: hidden;
             }
-        }
-
-        /** RTL **/
-        .invoice-box.rtl {
-            direction: rtl;
-            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-        }
-
-        .invoice-box.rtl table {
-            text-align: right;
-        }
-
-        .invoice-box.rtl table tr td:nth-child(2) {
-            text-align: left;
+            .ukuran, .ukuran * {
+                visibility:visible;
+            }
+            body {
+                background-color: white;
+            }
         }
     </style>
+
 </head>
 
 <body>
-    <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-                <td colspan="4">
-                    <table>
-                        <tr>
-                            <td>
-                                Invoice #:
-                                <?php echo $invoice['ID_Invoice']; ?><br />
-                                Created:
-                                <?php echo $invoice['Tanggal_Invoice']; ?><br />
-                                Due:
-                                <?php echo $invoice['Tanggal_JatuhTempo']; ?>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
 
-            <tr class="information">
-                <td colspan="4">
-                    <table>
-                        <tr>
-                            <td>
-                                Sparksuite, Inc.<br />
-                                12345 Sunny Road<br />
-                                Sunnyville, CA 12345
-                            </td>
-
-                            <td>
-                                <?php echo $invoice['Nama_Pelanggan']; ?><br />
-                                <?php echo $invoice['NoTelp_Pelanggan']; ?><br />
-                                <?php echo $invoice['Email_Pelanggan']; ?>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr class="heading">
-                <td>Produk</td>
-                <td>Harga</td>
-                <td>QTY</td>
-                <td>Total</td>
-            </tr>
-
-            <?php while ($detailinvoice = mysqli_fetch_array($data)) { ?>
-                <tr class="item">
-                    <td>
-                        <?php echo $detailinvoice['Nama_Produk']; ?>
-                    </td>
-                    <td>
-                        <?php echo rupiah($detailinvoice['Harga_Jual']); ?>
-                    </td>
-                    <td>
-                        <?php echo $detailinvoice['Jumlah_Produk']; ?>
-                    </td>
-                    <td>
-                        <?php echo rupiah($detailinvoice['Total_Harga']); ?>
-                    </td>
-                </tr>
-            <?php }
-            ; ?>
-            <tr class="total">
-                <td colspan="3"></td>
-
-                <td>Subtotal:
-                    <?php echo rupiah($invoice['Subtotal']); ?>
-                </td>
-            </tr>
-            <tr class="total">
-                <td colspan="3"></td>
-
-                <td>PPN:
-                    <?php echo $invoice['Pajak']; ?>%
-                </td>
-            </tr>
-            <tr class="total">
-                <td colspan="3"></td>
-
-                <td>Diskon:
-                    <?php echo $invoice['Diskon']; ?>%
-                </td>
-            </tr>
-            <tr class="total">
-                <td colspan="3"></td>
-
-                <td>Total:
-                    <?php echo rupiah($invoice['Total']); ?>
-                </td>
-            </tr>
-        </table>
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
     </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div class="ukuran">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card mt-3">
+                    <div class="card-header"> Invoice <strong>01/01/01/2018</strong> <span class="float-end">
+                            <strong>Status:</strong> Pending</span> </div>
+                    <div class="card-body">
+                        <div class="row mb-5">
+                            <div class="col-4">
+                                <h6>From:</h6>
+                                <div> <strong>Webz Poland</strong> </div>
+                                <div>Madalinskiego 8</div>
+                                <div>71-101 Szczecin, Poland</div>
+                                <div>Email: info@webz.com.pl</div>
+                                <div>Phone: +48 444 666 3333</div>
+                            </div>
+                            <div class="col-4">
+                                <h6>To:</h6>
+                                <div> <strong>Bob Mart</strong> </div>
+                                <div>Attn: Daniel Marek</div>
+                                <div>43-190 Mikolow, Poland</div>
+                                <div>Email: marek@daniel.com</div>
+                                <div>Phone: +48 123 456 789</div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead class="bg-danger text-white">
+                                    <tr>
+                                        <th class="center">#</th>
+                                        <th>Item</th>
+                                        <th>Description</th>
+                                        <th class="right">Unit Cost</th>
+                                        <th class="center">Qty</th>
+                                        <th class="right">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="center">1</td>
+                                        <td class="left strong">Origin License</td>
+                                        <td class="left">Extended License</td>
+                                        <td class="right">$999,00</td>
+                                        <td class="center">1</td>
+                                        <td class="right">$999,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">2</td>
+                                        <td class="left">Custom Services</td>
+                                        <td class="left">Instalation and Customization (cost per hour)</td>
+                                        <td class="right">$150,00</td>
+                                        <td class="center">20</td>
+                                        <td class="right">$3.000,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">3</td>
+                                        <td class="left">Hosting</td>
+                                        <td class="left">1 year subcription</td>
+                                        <td class="right">$499,00</td>
+                                        <td class="center">1</td>
+                                        <td class="right">$499,00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center">4</td>
+                                        <td class="left">Platinum Support</td>
+                                        <td class="left">1 year subcription 24/7</td>
+                                        <td class="right">$3.999,00</td>
+                                        <td class="center">1</td>
+                                        <td class="right">$3.999,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row d-flex justify-content-end">
+                            <div class="col-5">
+                                <table class="table table-clear">
+                                    <tbody>
+                                        <tr>
+                                            <td class="left"><strong>Subtotal</strong></td>
+                                            <td class="right text-end">$8.497,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>Discount (20%)</strong></td>
+                                            <td class="right text-end">$1,699,40</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>VAT (10%)</strong></td>
+                                            <td class="right text-end">$679,76</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left"><strong>Total</strong></td>
+                                            <td class="right text-end"><strong>$7.477,36</strong><br>
+                                                <strong>0.15050000 BTC</strong>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="vendor/global/global.min.js"></script>
+    <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/dlabnav-init.js"></script>
 </body>
 
 </html>
-
-<?php
-require_once 'vendor/autoload.php';
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
-$options = new Options();
-$options->set('isRemoteEnabled', true);
-$dompdf = new Dompdf($options);
-
-$html = ob_get_clean();
-$dompdf->loadHtml($html);
-
-
-$dompdf->setPaper('A4', 'portrait');
-
-$dompdf->render();
-
-// Display PDF in browser
-header('Content-Type: application/pdf');
-echo $dompdf->output();
