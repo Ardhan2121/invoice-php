@@ -765,7 +765,7 @@ include("partials/logstate.php");
   <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
-  <script src="js/demo.js"></script>
+  
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
