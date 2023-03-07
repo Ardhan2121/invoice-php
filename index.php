@@ -1,7 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <?php session_start();
+date_default_timezone_set('Asia/Jakarta');
 include("partials/logstate.php");
+include("controller/dashboard/data.php");
+include("controller/dashboard/chart.php");
 $_SESSION['hal'] = "Dashboard";
 
 ?>
@@ -730,8 +734,10 @@ $_SESSION['hal'] = "Dashboard";
                     <i class="flaticon-381-calendar-1 text-white"></i>
                   </span>
                   <div class="media-body text-end">
-                    <p class="mb-1">Total Invioce</p>
-                    <h3 class="">76</h3>
+                    <p class="mb-1">Total invoice</p>
+                    <h3 class="statistik">
+                      <?php echo $totalInvoice; ?>
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -751,7 +757,9 @@ $_SESSION['hal'] = "Dashboard";
                   </span>
                   <div class="media-body text-end">
                     <p class="mb-1">Pendapatan</p>
-                    <h3 class="">56K</h3>
+                    <h3 class="statistik">
+                      <?php echo rupiah($jumlahPendapatan); ?>
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -766,7 +774,9 @@ $_SESSION['hal'] = "Dashboard";
                   </span>
                   <div class="media-body text-end">
                     <p class="mb-1">Total Pelanggan </p>
-                    <h3 class="">3280</h3>
+                    <h3 class="statistik">
+                      <?php echo $totalPelanggan; ?>
+                    </h3>
                   </div>
                 </div>
               </div>
@@ -774,35 +784,13 @@ $_SESSION['hal'] = "Dashboard";
           </div>
         </div>
         <div class="row">
-          <div class="col-xl-6">
+          <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h5 class="card-title">Dark card title</h5>
+                <h4 class="card-title">Pendapatan 7 hari terakhir</h4>
               </div>
-              <div class="card-body mb-0">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                  card's
-                  content.</p>
-                <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
-                  somewhere</a>
-              </div>
-              <div class="card-footer bg-transparent border-0">Last updated 3 min ago
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-6">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-title">Dark card title</h5>
-              </div>
-              <div class="card-body mb-0">
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
-                  card's
-                  content.</p>
-                <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
-                  somewhere</a>
-              </div>
-              <div class="card-footer bg-transparent border-0">Last updated 3 min ago
+              <div class="card-body">
+                <canvas id="chartPendapatan"></canvas>
               </div>
             </div>
           </div>
@@ -851,6 +839,10 @@ $_SESSION['hal'] = "Dashboard";
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
 
+  <!-- Chart ChartJS plugin files -->
+  <script src="vendor/chart.js/Chart.bundle.min.js"></script>
+  <script src="js/plugins-init/chartjs-init.js"></script>
+
   <!-- Datatable -->
   <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
   <script src="js/plugins-init/datatables.init.js"></script>
@@ -860,19 +852,31 @@ $_SESSION['hal'] = "Dashboard";
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
   <script>
-    $(document).ready(function () {
-      $.ajax({
-        url: "controller/dashboard/data.php",
-        type: "GET",
-        dataType: "text",
-        success: function (data) {
-          $("#result").html(data);
-          console.log(data);
-        },
-        error: function (xhr, status, error) {
-          console.error(xhr);
+    var chartPendapatan = new Chart(document.getElementById('chartPendapatan'), {
+      type: 'line',
+      data: {
+        labels: <?php echo json_encode($labels); ?>,
+        defaultFontFamily: 'Poppins',
+        datasets: [{
+          label: 'Total Pendapatan',
+          data: <?php echo json_encode($data); ?>,
+          borderColor: 'rgba(136,108,192, 1)',
+          borderWidth: "3",
+          backgroundColor: 'rgba(136,108,192, 0.1)'
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              callback: function (value, index, values) {
+                return 'Rp ' + value.toLocaleString();
+              }
+            }
+          }]
         }
-      });
+      }
     });
   </script>
 </body>

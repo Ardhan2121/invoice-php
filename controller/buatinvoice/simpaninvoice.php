@@ -24,13 +24,13 @@ if ($conn->connect_error) {
 $cart_items = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
 
 if (isset($subtotal)) {
-    if (isset($jatuhtempo)) {
-        $sql = "INSERT INTO invoice (ID_Invoice,ID_Pelanggan,Tanggal_Invoice,Subtotal,Pajak,Diskon,Total) VALUES ('$id_invoice', '$id_pelanggan', '$tanggal', '$subtotal', '$diskon', '$pajak', '$total')";
+    if (!isset($jatuhtempo)) {
+        $sql = "INSERT INTO invoice (ID_Invoice,ID_Pelanggan,Tanggal_Invoice,Subtotal,Pajak,Diskon,Total) VALUES ('$id_invoice', '$id_pelanggan', '$tanggal', '$subtotal', '$pajak', '$diskon', '$total')";
         if ($conn->query($sql) !== TRUE) {
             die("Error: " . $sql . "<br>" . $conn->error);
         }
     } else {
-        $sql = "INSERT INTO invoice (ID_Invoice,ID_Pelanggan,Tanggal_Invoice,Tanggal_JatuhTempo,Subtotal,Pajak,Diskon,Total) VALUES ('$id_invoice', '$id_pelanggan', '$tanggal', '$jatuhtempo', '$subtotal', '$diskon', '$pajak', '$total')";
+        $sql = "INSERT INTO invoice (ID_Invoice,ID_Pelanggan,Tanggal_Invoice,Tanggal_JatuhTempo,Subtotal,Pajak,Diskon,Total) VALUES ('$id_invoice', '$id_pelanggan', '$tanggal', '$jatuhtempo', '$subtotal', '$pajak', '$diskon', '$total')";
         if ($conn->query($sql) !== TRUE) {
             die("Error: " . $sql . "<br>" . $conn->error);
         }
@@ -59,6 +59,7 @@ unset($_SESSION['tanggalJatuhTempo']);
 unset($_SESSION['IdInvoice']);
 unset($_SESSION['pelanggan']);
 unset($_SESSION['subtotal']);
+unset($_SESSION['IdInvoice']);
 
 
 

@@ -1,36 +1,42 @@
 <?php
-// Koneksi ke database
-require('../koneksi.php');
+// Buat koneksi ke database
+include 'controller/koneksi.php';
+// include '../koneksi.php';
 
-// Cek apakah ada data post berupa tanggal
-if (isset($_POST["tanggal"])) {
-    $tanggal = $_POST["tanggal"];
-} else {
-    $tanggal = date("Y-m-d"); // Jika tidak ada data post, tampilkan data hari ini
+// Inisialisasi variabel total invoice, total pelanggan, dan jumlah pendapatan
+$totalInvoice = 0;
+$totalPelanggan = 0;
+$jumlahPendapatan = 0;
+
+function rupiah($number)
+{
+    $rupiah = "Rp " . number_format($number, 0, ',', '.');
+    return $rupiah;
 }
 
-// Query untuk mengambil total invoice, total pelanggan, dan jumlah pendapatan berdasarkan tanggal
-$sql = "SELECT COUNT(*) AS total_invoice, COUNT(DISTINCT pelanggan) AS total_pelanggan, SUM(total_harga) AS jumlah_pendapatan FROM invoice WHERE DATE(tanggal) = '" . $tanggal . "'";
+// Buat query SQL untuk menghitung total invoice, total pelanggan, dan jumlah pendapatan
+$sql = "SELECT COUNT(DISTINCT ID_Invoice) AS total_invoice, 
+               (SELECT COUNT(*) FROM pelanggan) AS total_pelanggan,
+               SUM(total) AS jumlah_pendapatan 
+        FROM invoice";
+
+// Jika ada data POST berupa tanggal, filter berdasarkan tanggal tersebut
+if (isset($_POST['tanggal'])) {
+    $tanggal = mysqli_real_escape_string($conn, $_POST['tanggal']);
+    $sql .= " WHERE Tanggal_Invoice = '$tanggal'";
+} else {
+    $today = date('Y-m-d');
+    $sql .= " WHERE Tanggal_Invoice = '$today'";
+}
+
+// Jalankan query SQL
 $result = mysqli_query($conn, $sql);
 
-// Ambil data dari hasil query
+// Ambil hasil query dan masukkan ke dalam variabel
 if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
-    $total_invoice = $row["total_invoice"];
-    $total_pelanggan = $row["total_pelanggan"];
-    $jumlah_pendapatan = $row["jumlah_pendapatan"];
-} else {
-    $total_invoice = 0;
-    $total_pelanggan = 0;
-    $jumlah_pendapatan = 0;
+    $totalInvoice = $row['total_invoice'];
+    $totalPelanggan = $row['total_pelanggan'];
+    $jumlahPendapatan = $row['jumlah_pendapatan'];
 }
-
-// Tampilkan data dalam format JSON
-$data = array(
-    "total_invoice" => $total_invoice,
-    "total_pelanggan" => $total_pelanggan,
-    "jumlah_pendapatan" => $jumlah_pendapatan
-);
-echo json_encode($data);
-
 ?>

@@ -115,6 +115,8 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     header("Location: 500.html");
   } ?>
 
+
+
   <div id="invoice">
     <!-- (A) HEADER -->
     <table id="company">
@@ -224,6 +226,10 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
   </div>
 
   <script>
+    window.addEventListener('load', function () {
+      window.print();
+    });
+
   </script>
 </body>
 

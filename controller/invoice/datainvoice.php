@@ -31,4 +31,8 @@ if (isset($_POST['idPelanggan'])) {
         'alamat' => $_POST['alamatPelanggan']
     );
 }
+
+var_dump($_SESSION['pelanggan']);
+echo $_SESSION['tanggalInvoice'];
+echo $_SESSION['tanggalJatuhTempo'];
 ?>

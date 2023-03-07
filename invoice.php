@@ -868,6 +868,7 @@ $_SESSION['hal'] = 'Invoice';
             alamatPelanggan: alamatPelanggan
           },
           success: function (response) {
+            alert(response);
             window.location.href = 'buatinvoice.php';
           },
           error: function (xhr, status, error) {

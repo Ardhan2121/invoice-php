@@ -1,6 +1,7 @@
 <!-- modal info invoice -->
 <div class="modal fade" id="modalInfoInvoice" tabindex="-1" role="dialog" aria-labelledby="modalInfoInvoiceLabel"
     aria-hidden="true">
+    <form action="" id="dataInvoice">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -92,3 +93,4 @@
         </div>
     </div>
 </div>
+</form>

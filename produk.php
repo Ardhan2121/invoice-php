@@ -2,6 +2,7 @@
 <html lang="en">
 <?php session_start();
 $_SESSION['hal'] = "Dashboard";
+include("partials/logstate.php");
 ?>
 
 <head>
