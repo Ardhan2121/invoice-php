@@ -38,10 +38,11 @@ if (isset($subtotal)) {
 
     foreach ($cart_items as $item) {
         $id = $item['id'];
-        $qty = $item['qty'];
+        $diskon = $item['diskon'];
         $harga = $item['harga'];
+        $total = $item['total'];
 
-        $sql = "INSERT INTO detail_invoice (ID_Invoice, ID_Produk, Jumlah_Produk, Harga_Jual) VALUES ('$id_invoice', '$id', '$qty', '$harga')";
+        $sql = "INSERT INTO detail_invoice (ID_Invoice, ID_Produk, Diskon, Harga_Jual, Harga_Promo) VALUES ('$id_invoice', '$id', '$diskon', '$harga', '$total')";
 
         if ($conn->query($sql) !== TRUE) {
             die("Error: " . $sql . "<br>" . $conn->error);
@@ -57,6 +58,8 @@ unset($_SESSION['tanggalInvoice']);
 unset($_SESSION['tanggalJatuhTempo']);
 unset($_SESSION['IdInvoice']);
 unset($_SESSION['pelanggan']);
+unset($_SESSION['subtotal']);
+
 
 
 echo $id_invoice;

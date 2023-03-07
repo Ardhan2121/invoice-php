@@ -1,192 +1,230 @@
-<!DOCTYPE html>
-<html lang="en">
+<html data-kantu="1">
+<?php
+require 'controller/koneksi.php';
+if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
+  $id = $_GET['id'];
+  //query untuk mengambil data invoice dan pelanggan
+  $query = "SELECT *, subtotal * (Diskon/100) as Total_Diskon, subtotal * (Pajak/100) as Total_Pajak FROM invoice JOIN pelanggan ON invoice.id_pelanggan = pelanggan.id_pelanggan WHERE invoice.id_invoice = $id";
+  $data = mysqli_query($conn, $query);
+  $invoice = mysqli_fetch_assoc($data);
+
+  //query untuk mengambil data detail invoice
+  $query = "SELECT detail_invoice.*, produk.*, detail_invoice.Harga_Jual - detail_invoice.Harga_Promo AS Total_Diskon
+    FROM detail_invoice
+    JOIN produk ON detail_invoice.ID_Produk = produk.ID_Produk
+    WHERE detail_invoice.id_invoice = $id;
+    ";
+  $data = mysqli_query($conn, $query);
+
+  function rupiah($number)
+  {
+    $rupiah = "Rp " . number_format($number, 0, ',', '.');
+    return $rupiah;
+  }
+} else {
+  header('Location: 500.html');
+}
+?>
+
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="">
-    <meta name="author" content="">
-    <meta name="robots" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Fillow : Fillow Saas Admin  Bootstrap 5 Template">
-    <meta property="og:title" content="Fillow : Fillow Saas Admin  Bootstrap 5 Template">
-    <meta property="og:description" content="Fillow : Fillow Saas Admin  Bootstrap 5 Template">
-    <meta property="og:image" content="https://fillow.dexignlab.com/xhtml/social-image.png">
-    <meta name="format-detection" content="telephone=no">
+  <meta charset="utf-8" />
+  <style>
+    body {
+      font-family: poppins;
+      padding: 0;
+      margin: 0;
+    }
 
-    <!-- PAGE TITLE HERE -->
-    <title>Admin Dashboard</title>
+    #invoice {
+      width: 210mm;
+      padding: 15px;
+      margin: 0 auto;
+    }
 
-    <!-- FAVICONS ICON -->
-    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
-    <link href="vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    #billship,
+    #company,
+    #items {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
-    <style>
-        .ukuran {
-            width: 210mm;
-            height: 297mm;
-            margin: 0 auto;
-        }
-        .warna-biru {
-            background-color: darkblue;
-        }
-        @media print {
-            .ukuran {
-                margin: 0;
-                width: 100%;
-            }
-            body * {
-                visibility: hidden;
-            }
-            .ukuran, .ukuran * {
-                visibility:visible;
-            }
-            body {
-                background-color: white;
-            }
-        }
-    </style>
+    #company td,
+    #billship td,
+    #items td,
+    #items th {
+      padding: 15px;
+    }
 
+    #company,
+    #billship {
+      margin-bottom: 30px;
+    }
+
+    #company img {
+      max-width: 180px;
+      height: auto;
+    }
+
+    #bigi {
+      font-size: 45px;
+      font-weight: 700;
+      color: #0083bb;
+    }
+
+    #billship {
+      background: #0083bb;
+      color: #fff;
+    }
+
+    #billship td {
+      width: 33%;
+    }
+
+    #items th {
+      text-align: left;
+      border-top: 2px solid hsl(198, 100%, 60%);
+      border-bottom: 2px solid hsl(198, 100%, 89%);
+    }
+
+    #items td {
+      border-bottom: 2px solid hsl(198, 100%, 89%);
+    }
+
+    .idesc {
+      color: #ca3f3f;
+    }
+
+    .ttl {
+      font-weight: 700;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    #notes {
+      margin-top: 30px;
+      font-size: 0.95em;
+    }
+  </style>
 </head>
 
 <body>
+  <?php if (!isset($id)) {
+    header("Location: 500.html");
+  } ?>
 
-    <!--*******************
-        Preloader start
-    ********************-->
-    <div id="preloader">
-        <div class="lds-ripple">
-            <div></div>
-            <div></div>
-        </div>
-    </div>
-    <!--*******************
-        Preloader end
-    ********************-->
+  <div id="invoice">
+    <!-- (A) HEADER -->
+    <table id="company">
+      <tbody>
+        <tr>
+          <td><img src="images/logo.png" /></td>
+          <td class="right">
+            <div>Company Name</div>
+            <div>Street Address, City, State, Zip</div>
+            <div>Phone: xxx-xxx-xxx | Fax: xxx-xxx-xxx</div>
+            <div>https://your-site.com</div>
+            <div>doge@your-site.com</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
+    <!-- (B) BILL TO, SHIP TO, INVOICE INFO -->
+    <div id="bigi">TAGIHAN</div>
+    <table id="billship">
+      <tbody>
+        <tr>
+          <td>
+            <strong>Data Pelanggan</strong><br />
+            <?php echo $invoice['Nama_Pelanggan']; ?>
+            (
+            <?php echo $invoice['NoTelp_Pelanggan']; ?>)<br />
+            <?php echo $invoice['Email_Pelanggan']; ?><br />
+            <?php echo $invoice['Alamat_Pelanggan']; ?><br />
+          </td>
+          <td></td>
+          <td>
+            <strong>Data Invoice</strong><br />
+            No Invoice:
+            <?php echo $invoice['ID_Invoice']; ?><br /><strong>Dibuat:</strong>
+            <?php echo $invoice['Tanggal_Invoice']; ?><br /><strong>Jatuh Tempo:</strong> CB-789-123
+            <?php echo $invoice['Tanggal_JatuhTempo']; ?><br />
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-    <!--**********************************
-        Main wrapper start
-    ***********************************-->
-    <div class="ukuran">
-        <div class="row">
-            <div class="col-lg-12">
+    <!-- (C) ITEMS & TOTALS -->
+    <table id="items">
+      <tbody>
+        <tr>
+          <th>Produk</th>
+          <th>Harga Awal</th>
+          <th>Diskon</th>
+          <th>Harga Promo</th>
+        </tr>
+        <?php while ($detailinvoice = mysqli_fetch_array($data)) { ?>
+          <tr>
+            <td>
+              <div>
+                <?php echo $detailinvoice['Nama_Produk']; ?>
+              </div>
+            </td>
+            <td>
+              <?php echo rupiah($detailinvoice['Harga_Jual']); ?>
+            </td>
+            <td>
+              <?php echo rupiah($detailinvoice['Total_Diskon']); ?>
+            </td>
+            <td>
+              <?php echo rupiah($detailinvoice['Harga_Promo']); ?>
+            </td>
+          </tr>
+        <?php }
+        ; ?>
+        <tr class="ttl">
+          <td class="right" colspan="3">SUBTOTAL</td>
+          <td>
+            <?php echo rupiah($invoice['Subtotal']); ?>
+          </td>
+        </tr>
+        <tr class="ttl">
+          <td class="right" colspan="3">DISKON
+            <?php echo $invoice['Diskon']; ?>%
+          </td>
+          <td>
+            -
+            <?php echo rupiah($invoice['Total_Diskon']); ?>
+          </td>
+        </tr>
+        <tr class="ttl">
+          <td class="right" colspan="3">PAJAK
+            <?php echo $invoice['Pajak']; ?>%
+          </td>
+          <td>
+            +
+            <?php echo rupiah($invoice['Total_Pajak']); ?>
+          </td>
+        </tr>
+        <tr class="ttl">
+          <td class="right" colspan="3">TOTAL</td>
+          <td>
+            <?php echo rupiah($invoice['Total']); ?>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-                <div class="card mt-3">
-                    <div class="card-header"> Invoice <strong>01/01/01/2018</strong> <span class="float-end">
-                            <strong>Status:</strong> Pending</span> </div>
-                    <div class="card-body">
-                        <div class="row mb-5">
-                            <div class="col-4">
-                                <h6>From:</h6>
-                                <div> <strong>Webz Poland</strong> </div>
-                                <div>Madalinskiego 8</div>
-                                <div>71-101 Szczecin, Poland</div>
-                                <div>Email: info@webz.com.pl</div>
-                                <div>Phone: +48 444 666 3333</div>
-                            </div>
-                            <div class="col-4">
-                                <h6>To:</h6>
-                                <div> <strong>Bob Mart</strong> </div>
-                                <div>Attn: Daniel Marek</div>
-                                <div>43-190 Mikolow, Poland</div>
-                                <div>Email: marek@daniel.com</div>
-                                <div>Phone: +48 123 456 789</div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead class="bg-danger text-white">
-                                    <tr>
-                                        <th class="center">#</th>
-                                        <th>Item</th>
-                                        <th>Description</th>
-                                        <th class="right">Unit Cost</th>
-                                        <th class="center">Qty</th>
-                                        <th class="right">Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="center">1</td>
-                                        <td class="left strong">Origin License</td>
-                                        <td class="left">Extended License</td>
-                                        <td class="right">$999,00</td>
-                                        <td class="center">1</td>
-                                        <td class="right">$999,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center">2</td>
-                                        <td class="left">Custom Services</td>
-                                        <td class="left">Instalation and Customization (cost per hour)</td>
-                                        <td class="right">$150,00</td>
-                                        <td class="center">20</td>
-                                        <td class="right">$3.000,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center">3</td>
-                                        <td class="left">Hosting</td>
-                                        <td class="left">1 year subcription</td>
-                                        <td class="right">$499,00</td>
-                                        <td class="center">1</td>
-                                        <td class="right">$499,00</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center">4</td>
-                                        <td class="left">Platinum Support</td>
-                                        <td class="left">1 year subcription 24/7</td>
-                                        <td class="right">$3.999,00</td>
-                                        <td class="center">1</td>
-                                        <td class="right">$3.999,00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row d-flex justify-content-end">
-                            <div class="col-5">
-                                <table class="table table-clear">
-                                    <tbody>
-                                        <tr>
-                                            <td class="left"><strong>Subtotal</strong></td>
-                                            <td class="right text-end">$8.497,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="left"><strong>Discount (20%)</strong></td>
-                                            <td class="right text-end">$1,699,40</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="left"><strong>VAT (10%)</strong></td>
-                                            <td class="right text-end">$679,76</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="left"><strong>Total</strong></td>
-                                            <td class="right text-end"><strong>$7.477,36</strong><br>
-                                                <strong>0.15050000 BTC</strong>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--**********************************
-        Main wrapper end
-    ***********************************-->
+    <!-- (D) NOTES -->
+    <div id="notes">Cheques should be made payable to Code Boxx<br />Get a 10% off with the next purchase with discount
+      code DOGE1234!<br /></div>
+  </div>
 
-    <!--**********************************
-        Scripts
-    ***********************************-->
-    <!-- Required vendors -->
-    <script src="vendor/global/global.min.js"></script>
-    <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
-    <script src="js/custom.min.js"></script>
-    <script src="js/dlabnav-init.js"></script>
+  <script>
+  </script>
 </body>
 
 </html>

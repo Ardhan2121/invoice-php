@@ -752,9 +752,9 @@ $_SESSION['hal'] = 'Invoice';
                       <tr>
                         <th>ID</th>
                         <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th>Qty</th>
-                        <th>Total</th>
+                        <th>Harga Produk</th>
+                        <th>Diskon</th>
+                        <th>Harga Promo</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -844,7 +844,7 @@ $_SESSION['hal'] = 'Invoice';
   <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
-  
+
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
@@ -869,6 +869,7 @@ $_SESSION['hal'] = 'Invoice';
 
   <script>
     $(document).ready(function () {
+
       updateSubtotal()
       var table = $('#daftar-pembelian').DataTable({
         searching: false,
@@ -900,7 +901,7 @@ $_SESSION['hal'] = 'Invoice';
             targets: [1]
           },
           {
-            width: '10%',
+            width: '5%',
             targets: [2]
           },
           {
@@ -908,11 +909,11 @@ $_SESSION['hal'] = 'Invoice';
             targets: [3]
           },
           {
-            width: '10%',
+            width: '15%',
             targets: [4]
           },
           {
-            width: '10%',
+            width: '5%',
             targets: [5]
           }
         ],
@@ -930,7 +931,15 @@ $_SESSION['hal'] = 'Invoice';
               return formatAngka(data);
             }
           },
-          { data: 'qty' },
+          {
+            data: 'diskon',
+            render: function (data, type, row) {
+              if (type === 'display') {
+                return data + '%';
+              }
+              return data;
+            }
+          },
           {
             data: 'total',
             render: function (data) {
@@ -947,216 +956,229 @@ $_SESSION['hal'] = 'Invoice';
         ]
       });
 
-      table.on('click', '.btn-delete', function () {
-        var row = $(this).closest('tr');
-        var productId = $(this).data('id');
-        console.log(productId);
-
-        // lakukan request ajax untuk menghapus produk dengan id tertentu
-        $.ajax({
-          type: 'POST',
-          url: 'controller/buatinvoice/daftarpembelian.php',
-          data: { hapus_produk: productId },
-          success: function (response) {
-            // Refresh data table
-            $('#table-cart').DataTable().ajax.reload();
-            updateSubtotal();
-          },
-          error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.log('Error : ' + errorThrown);
-          }
-        });
-
-
-        // hapus baris dari datatable
-        table.row(row).remove().draw(false);
-      });
-
-
-      function formatAngka(angka) {
-        return $.number(angka, 0, ',', '.');
-      }
-
-      function updateSubtotal() {
-        // Kirim permintaan AJAX untuk mengambil nilai subtotal terbaru
-        $.ajax({
-          url: "controller/buatinvoice/subtotal.php",
-          success: function (response) {
-            // Update nilai subtotal dengan nilai yang diperbarui
-            $("#subtotal").html(formatAngka(response));
-            hitungTotal();
-          },
-          error: function (xhr, status, error) {
-            console.log("Terjadi kesalahan: " + error);
-          }
-        });
-      }
-
-      function hitungTotal() {
-        // Menghitung total
-        var subtotal = parseInt($("#subtotal").text().replace(/\./g, ""));
-        var diskon = parseInt($("#diskon").val());
-        var ppn = parseInt($("#pajak").val());
-
-
-        // Cek nilai diskon
-        if (isNaN(diskon) || diskon === "") {
-          diskon = 0;
-        } else if (diskon > 100) {
-          diskon = 100;
-        }
-
-        // Cek nilai ppn
-        if (isNaN(ppn) || ppn === "") {
-          ppn = 0;
-        } else if (ppn > 100) {
-          ppn = 100;
-        }
-
-        var total = subtotal - (subtotal * diskon / 100) + (subtotal * ppn / 100);
-
-        // Menampilkan hasil perhitungan di elemen outputTotal
-        $("#total").text(formatAngka(total));
-      }
-
-      $('#buat-invoice').click(function () {
-        // Ambil data subtotal dari session cart
-        var subtotal = parseInt($('#subtotal').text().replace(".", ""));
-        var diskon = parseInt($("#diskon").val());
-        var pajak = parseInt($("#pajak").val());
-        var total = subtotal - (subtotal * diskon / 100) + (subtotal * pajak / 100);
-        // Kirim data subtotal menggunakan Ajax
-        $.ajax({
-          url: 'controller/buatinvoice/simpaninvoice.php',
-          method: 'POST',
-          data: {
-            subtotal: subtotal,
-            diskon: diskon,
-            pajak: pajak,
-            total: total
-          },
-          success: function (response) {
-            Swal.fire({
-              title: 'Berhasil',
-              text: "Mau di Print atau ga",
-              icon: 'success',
-              showCancelButton: true,
-              confirmButtonText: 'Print Dong!',
-              cancelButtonText: "G"
-            }).then((result) => {
-              if (result.isConfirmed) {
-                var url = "detailinvoice.php?id=" + response;
-                window.open(url, "_blank");
-                window.location.href = "invoice.php";
-              }
-              else if (result.isConfirmed == 0){
-                window.location.href = "invoice.php";
-              }
-            })
-          },
-          error: function (xhr, status, error) {
-            // Tampilkan pesan error
-            alert('Terjadi kesalahan: ' + error);
-          }
-        });
-      });
-
-
-
-
-      // Ketika opsi yang dipilih berubah
-      $('#inputIdProduk').change(function () {
-        var idProduk = $(this).val(); // Ambil nilai opsi yang dipilih
-
-        // Kirimkan data ke server menggunakan AJAX
-        $.ajax({
-          type: 'POST',
-          url: 'controller/buatinvoice/cariproduk.php', // Ganti dengan URL yang sesuai
-          data: { idProduk: idProduk },
-          dataType: 'json',
-          success: function (data) {
-            // Isi input dengan data yang diterima dari server
-            $('#inputNamaProduk').val(data.nama);
-            $('#inputHargaProduk').val(formatAngka(data.harga));
-          },
-          error: function (xhr, status, error) {
-            console.log(xhr.responseText);
-          }
-        });
-      });
-
-      $('#inputIdProduk').change(function () {
-        if ($("#inputIdProduk").val() !== '') {
-          // Aktifkan tombol Lanjut
-          $('#btntambah').prop('disabled', false);
+      //modal input diskon validasi
+      var diskonProduk = $('#diskonProduk');
+      // Tambahkan event listener untuk membatasi input hanya angka
+      diskonProduk.on('input', function () {
+        var angka = parseInt($(this).val(), 10);
+        if (isNaN(angka)) {
+          $(this).val('');
         } else {
-          // Jika kosong, nonaktifkan tombol Lanjut
-          $('#btntambah').prop('disabled', true);
+          $(this).val(Math.min(Math.max(angka, 0), 100));
         }
       });
 
-      $('#btntambah').click(function () {
-        var idProduk = $('#inputIdProduk').val();
-        var namaProduk = $('#inputNamaProduk').val();
-        var hargaProduk = parseInt($('#inputHargaProduk').val().replace(".", ""));
-        var qtyProduk = parseInt($('#inputQtyProduk').val());
-        var total = hargaProduk * qtyProduk;
+    table.on('click', '.btn-delete', function () {
+      var row = $(this).closest('tr');
+      var productId = $(this).data('id');
+      console.log(productId);
 
-        var produk = {
-          id: idProduk,
-          nama: namaProduk,
-          harga: hargaProduk,
-          qty: qtyProduk,
+      // lakukan request ajax untuk menghapus produk dengan id tertentu
+      $.ajax({
+        type: 'POST',
+        url: 'controller/buatinvoice/daftarpembelian.php',
+        data: { hapus_produk: productId },
+        success: function (response) {
+          // Refresh data table
+          $('#table-cart').DataTable().ajax.reload();
+          updateSubtotal();
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          console.log('Error : ' + errorThrown);
+        }
+      });
+
+
+      // hapus baris dari datatable
+      table.row(row).remove().draw(false);
+    });
+
+
+    function formatAngka(angka) {
+      return $.number(angka, 0, ',', '.');
+    }
+
+    function updateSubtotal() {
+      // Kirim permintaan AJAX untuk mengambil nilai subtotal terbaru
+      $.ajax({
+        url: "controller/buatinvoice/subtotal.php",
+        success: function (response) {
+          // Update nilai subtotal dengan nilai yang diperbarui
+          $("#subtotal").html(formatAngka(response));
+          hitungTotal();
+        },
+        error: function (xhr, status, error) {
+          console.log("Terjadi kesalahan: " + error);
+        }
+      });
+    }
+
+    function hitungTotal() {
+      // Menghitung total
+      var subtotal = parseInt($("#subtotal").text().replace(/\./g, ""));
+      var diskon = parseInt($("#diskon").val());
+      var ppn = parseInt($("#pajak").val());
+
+
+      // Cek nilai diskon
+      if (isNaN(diskon) || diskon === "") {
+        diskon = 0;
+      } else if (diskon > 100) {
+        diskon = 100;
+      }
+
+      // Cek nilai ppn
+      if (isNaN(ppn) || ppn === "") {
+        ppn = 0;
+      } else if (ppn > 100) {
+        ppn = 100;
+      }
+
+      var total = subtotal - (subtotal * diskon / 100) + (subtotal * ppn / 100);
+
+      // Menampilkan hasil perhitungan di elemen outputTotal
+      $("#total").text(formatAngka(total));
+    }
+
+    $('#buat-invoice').click(function () {
+      // Ambil data subtotal dari session cart
+      var subtotal = parseInt($('#subtotal').text().replace(".", ""));
+      var diskon = parseInt($("#diskon").val());
+      var pajak = parseInt($("#pajak").val());
+      var total = subtotal - (subtotal * diskon / 100) + (subtotal * pajak / 100);
+      // Kirim data subtotal menggunakan Ajax
+      $.ajax({
+        url: 'controller/buatinvoice/simpaninvoice.php',
+        method: 'POST',
+        data: {
+          subtotal: subtotal,
+          diskon: diskon,
+          pajak: pajak,
           total: total
-        };
-
-        // Send the product data to PHP API using AJAX
-        $.ajax({
-          url: 'controller/buatinvoice/daftarpembelian.php',
-          method: 'POST',
-          data: {
-            produk: produk
-          },
-          success: function (response) {
-            $('#daftar-pembelian').DataTable().ajax.reload();
-            updateSubtotal();
-            toastr.success("Berhasil Menambah Barang", "Success", {
-              positionClass: "toast-top-right",
-              timeOut: 5e3,
-              closeButton: !0,
-              debug: !1,
-              newestOnTop: !0,
-              progressBar: !0,
-              preventDuplicates: !0,
-              onclick: null,
-              showDuration: "300",
-              hideDuration: "1000",
-              extendedTimeOut: "1000",
-              showEasing: "swing",
-              hideEasing: "linear",
-              showMethod: "fadeIn",
-              hideMethod: "fadeOut",
-              tapToDismiss: !1
-            });
-          },
-          error: function (xhr, status, error) {
-            // Handle error response
-            console.log(error);
-          }
-        });
-      });
-
-      $("#diskon, #pajak").on("input", function () {
-        hitungTotal();
-      });
-
-      $('#diskon, #pajak').on('keypress keydown keyup', function (event) {
-        var currentValue = $(this).val();
-        if (event.which != 8 && currentValue > 100) {
-          event.preventDefault();
-          $(this).val(100);
+        },
+        success: function (response) {
+          Swal.fire({
+            title: 'Berhasil',
+            text: "Mau di Print atau ga",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'Print Dong!',
+            cancelButtonText: "G"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              var url = "detailinvoice.php?id=" + response;
+              window.open(url, "_blank");
+              window.location.href = "invoice.php";
+            }
+            else if (result.isConfirmed == 0) {
+              window.location.href = "invoice.php";
+            }
+          })
+        },
+        error: function (xhr, status, error) {
+          // Tampilkan pesan error
+          alert('Terjadi kesalahan: ' + error);
         }
       });
+    });
+
+
+
+
+    // Ketika opsi yang dipilih berubah
+    $('#inputIdProduk').change(function () {
+      var idProduk = $(this).val(); // Ambil nilai opsi yang dipilih
+
+      // Kirimkan data ke server menggunakan AJAX
+      $.ajax({
+        type: 'POST',
+        url: 'controller/buatinvoice/cariproduk.php', // Ganti dengan URL yang sesuai
+        data: { idProduk: idProduk },
+        dataType: 'json',
+        success: function (data) {
+          // Isi input dengan data yang diterima dari server
+          $('#inputNamaProduk').val(data.nama);
+          $('#inputHargaProduk').val(formatAngka(data.harga));
+        },
+        error: function (xhr, status, error) {
+          console.log(xhr.responseText);
+        }
+      });
+    });
+
+    $('#inputIdProduk').change(function () {
+      if ($("#inputIdProduk").val() !== '') {
+        // Aktifkan tombol Lanjut
+        $('#btntambah').prop('disabled', false);
+      } else {
+        // Jika kosong, nonaktifkan tombol Lanjut
+        $('#btntambah').prop('disabled', true);
+      }
+    });
+
+    $('#btntambah').click(function () {
+      var idProduk = $('#inputIdProduk').val();
+      var namaProduk = $('#inputNamaProduk').val();
+      var hargaProduk = parseInt($('#inputHargaProduk').val().replace(".", ""));
+      var diskonProduk = parseInt($('#diskonProduk').val());
+      var total = hargaProduk - (hargaProduk * diskonProduk / 100);
+
+
+      var produk = {
+        id: idProduk,
+        nama: namaProduk,
+        harga: hargaProduk,
+        diskon: diskonProduk,
+        total: total
+      };
+
+      // Send the product data to PHP API using AJAX
+      $.ajax({
+        url: 'controller/buatinvoice/daftarpembelian.php',
+        method: 'POST',
+        data: {
+          produk: produk
+        },
+        success: function (response) {
+          $('#daftar-pembelian').DataTable().ajax.reload();
+          updateSubtotal();
+          toastr.success("Berhasil Menambah Barang", "Success", {
+            positionClass: "toast-top-right",
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+          });
+        },
+        error: function (xhr, status, error) {
+          // Handle error response
+          console.log(error);
+        }
+      });
+    });
+
+    $("#diskon, #pajak").on("input", function () {
+      hitungTotal();
+    });
+
+    $('#diskon, #pajak').on('keypress keydown keyup', function (event) {
+      var currentValue = $(this).val();
+      if (event.which != 8 && currentValue > 100) {
+        event.preventDefault();
+        $(this).val(100);
+      }
+    });
     });
   </script>
 

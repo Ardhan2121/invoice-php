@@ -730,7 +730,7 @@ $_SESSION['hal'] = "Dashboard";
                     <i class="flaticon-381-calendar-1 text-white"></i>
                   </span>
                   <div class="media-body text-end">
-                    <p class="mb-1">Invioce Terbaru</p>
+                    <p class="mb-1">Total Invioce</p>
                     <h3 class="">76</h3>
                   </div>
                 </div>
@@ -742,10 +742,12 @@ $_SESSION['hal'] = "Dashboard";
               <div class="card-body p-4">
                 <div class="media">
                   <span class="me-3 bg-success">
-                  <svg class="text-white" id="icon-revenue" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
-											<line x1="12" y1="1" x2="12" y2="23"></line>
-											<path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-										</svg>
+                    <svg class="text-white" id="icon-revenue" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                      viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" class="feather feather-dollar-sign">
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
                   </span>
                   <div class="media-body text-end">
                     <p class="mb-1">Pendapatan</p>
@@ -772,36 +774,38 @@ $_SESSION['hal'] = "Dashboard";
           </div>
         </div>
         <div class="row">
-        <div class="col-xl-6">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="card-title">Dark card title</h5>
-            </div>
-            <div class="card-body mb-0">
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-              <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
-                somewhere</a>
-            </div>
-            <div class="card-footer bg-transparent border-0">Last updated 3 min ago
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-6">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="card-title">Dark card title</h5>
-            </div>
-            <div class="card-body mb-0">
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                content.</p>
-              <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
-                somewhere</a>
-            </div>
-            <div class="card-footer bg-transparent border-0">Last updated 3 min ago
+          <div class="col-xl-6">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Dark card title</h5>
+              </div>
+              <div class="card-body mb-0">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                  card's
+                  content.</p>
+                <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
+                  somewhere</a>
+              </div>
+              <div class="card-footer bg-transparent border-0">Last updated 3 min ago
+              </div>
             </div>
           </div>
-        </div>
+          <div class="col-xl-6">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Dark card title</h5>
+              </div>
+              <div class="card-body mb-0">
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                  card's
+                  content.</p>
+                <a href="javascript:void(0);" class="btn btn-primary btn-card text-white">Go
+                  somewhere</a>
+              </div>
+              <div class="card-footer bg-transparent border-0">Last updated 3 min ago
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -857,217 +861,20 @@ $_SESSION['hal'] = "Dashboard";
 
   <script>
     $(document).ready(function () {
-      $('.telepon').inputmask('9999-9999-9999');
-    });
-
-
-    var table = $('#tabel').DataTable({
-      lengthChange: false,
-      language: {
-        search: 'Search...',
-        paginate: {
-          next: '<i class="fa fa-angle-double-right" aria-hidden="true"></i>',
-          previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
+      $.ajax({
+        url: "controller/dashboard/data.php",
+        type: "GET",
+        dataType: "text",
+        success: function (data) {
+          $("#result").html(data);
+          console.log(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(xhr);
         }
-      },
-      ajax: "controller/pelanggan/listpelanggan.php",
-      columns: [
-        { "data": "ID_Pelanggan" },
-        { "data": "Nama_Pelanggan" },
-        { "data": "Email_Pelanggan" },
-        { "data": "Alamat_Pelanggan" },
-        { "data": "NoTelp_Pelanggan" },
-        {
-          data: null,
-          render: function (data, type, row) {
-            // Tambahkan tombol Edit
-            var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Pelanggan + '" data-nama="' + row.Nama_Pelanggan + '" data-email="' + row.Email_Pelanggan + '" data-telepon="' + row.NoTelp_Pelanggan + '" data-alamat="' + row.Alamat_Pelanggan + '">Edit</button>';
-            // Tambahkan tombol Delete
-            var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-id="' + row.ID_Pelanggan + '">Delete</button>';
-            // Gabungkan tombol Edit dan Delete
-            return editButton + ' ' + deleteButton;
-          }
-        }
-
-      ]
-    });
-
-    $(document).ready(function () {
-      // Saat form submit, kirim data ke API PHP dengan AJAX
-      $('#form-tambah-pelanggan').submit(function (event) {
-        // Mencegah form submit secara default
-        event.preventDefault();
-
-        // Ambil data dari form
-        var nama = $('#nama').val();
-        var email = $('#email').val();
-        var alamat = $('#alamat').val();
-        var telepon = $('#telepon').val();
-
-        // Buat object data yang akan dikirim ke API
-        var data = {
-          'nama': nama,
-          'email': email,
-          'alamat': alamat,
-          'telepon': telepon
-        };
-
-        // Kirim data ke API dengan AJAX
-        $.ajax({
-          type: 'POST',
-          url: 'controller/pelanggan/tambahpelanggan.php',
-          data: data,
-          dataType: 'json',
-          success: function (response) {
-            // Tampilkan pesan berhasil atau gagal
-            if (response.status == 'success') {
-              Swal.fire({
-                icon: 'success',
-                title: response.status,
-                text: response.message,
-              })
-              table.ajax.reload();
-              // Reset nilai form
-              $('#form-tambah-pelanggan')[0].reset();
-              // Tutup modal
-              $('#modalTambahPelanggan').modal('hide');
-            } else {
-              Swal.fire({
-                icon: 'error',
-                title: response.status,
-                text: response.message,
-              })
-            }
-          },
-          error: function (xhr, status, error) {
-            // Tampilkan pesan error
-            alert(error);
-          }
-        });
       });
-
-      $('#tabel').on('click', '.btn-delete', function () {
-        // Ambil data dari tombol Delete
-        var id = $(this).data('id');
-        // Tampilkan konfirmasi Delete
-        Swal.fire({
-          title: 'Anda yakin?',
-          text: "data akan dihapus permanen",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Hapus',
-          cancelButtonText: 'Batal'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            $.ajax({
-              url: 'controller/pelanggan/deletepelanggan.php',
-              method: 'POST',
-              data: { id: id },
-              dataType: 'json',
-              success: function (response) {
-                // Cek apakah status response adalah success
-                if (response.status == 'success') {
-                  Swal.fire({
-                    icon: 'success',
-                    title: response.status,
-                    text: response.message,
-                  })
-                  // Reload data table
-                  table.ajax.reload();
-                } else {
-                  Swal.fire({
-                    icon: 'error',
-                    title: response.status,
-                    text: response.message,
-                  })
-                }
-              },
-              error: function (xhr, ajaxOptions, thrownError) {
-                // Tampilkan pesan error
-                alert(xhr.responseText);
-              }
-            });
-          }
-        })
-      });
-
-      // Tambahkan event click pada tombol edit
-      $('#tabel').on('click', '.btn-edit', function () {
-        // Ambil data dari row tabel yang diklik
-        var id = $(this).data('id');
-        var nama = $(this).data('nama');
-        var email = $(this).data('email');
-        var alamat = $(this).data('alamat');
-        var telepon = $(this).data('telepon');
-
-        // Set value form pada modal edit pelanggan
-        $('#editId').val(id);
-        $('#editNama').val(nama);
-        $('#editEmail').val(email);
-        $('#editAlamat').val(alamat);
-        $('#editTelepon').val(telepon);
-
-        // Ubah ID modal edit pelanggan sesuai dengan ID pelanggan yang diedit
-        $('#editPelangganModal').attr('id', 'editPelangganModal-' + id);
-
-        // Tampilkan modal edit pelanggan
-        $('#editPelangganModal-' + id).modal('show');
-      });
-
-      //ketika form disubmit
-      $(document).on('submit', '#formEditPelanggan', function (e) {
-        e.preventDefault();
-
-        // Ambil data dari form
-        var idPelanggan = $('#editId').val();
-        var namaPelanggan = $('#editNama').val();
-        var emailPelanggan = $('#editEmail').val();
-        var alamatPelanggan = $('#editAlamat').val();
-        var teleponPelanggan = $('#editTelepon').val();
-
-        // Buat objek data untuk dikirim ke server
-        var data = {
-          id: idPelanggan,
-          nama: namaPelanggan,
-          email: emailPelanggan,
-          telepon: teleponPelanggan,
-          alamat: alamatPelanggan
-        };
-
-        // Kirim request ke API menggunakan AJAX
-        $.ajax({
-          url: 'controller/pelanggan/editpelanggan.php',
-          type: 'POST',
-          data: data,
-          success: function (response) {
-            // Tampilkan pesan sukses
-            Swal.fire({
-              icon: 'success',
-              title: response.status,
-              text: response.message,
-            })
-            // Refresh data pada tabel
-            $('#tabel').DataTable().ajax.reload();
-
-            // Tutup modal edit pelanggan
-            $('#modal-edit-pelanggan').modal('hide');
-          },
-          error: function (xhr, status, error) {
-            Swal.fire({
-              icon: 'error',
-              title: status,
-              text: error,
-            })
-          }
-        });
-      });
-      
     });
   </script>
-  <?php include 'modal/pelanggan.php'; ?>
-
 </body>
 
 </html>

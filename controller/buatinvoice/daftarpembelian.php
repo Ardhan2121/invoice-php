@@ -15,12 +15,12 @@ if (isset($_POST['produk'])) {
         }
     }
 
-    // Add the product to the session cart or update its qty and total
+    // Add the product to the session cart or update its diskon and total
     if ($produkIndex == -1) {
         $_SESSION['cart'][] = $produk;
     } else {
-        $_SESSION['cart'][$produkIndex]['qty'] += $produk['qty'];
-        $_SESSION['cart'][$produkIndex]['total'] += $produk['total'];
+        $_SESSION['cart'][$produkIndex]['diskon'] = $produk['diskon'];
+        $_SESSION['cart'][$produkIndex]['total'] = $produk['total'];
     }
 
     // Calculate subtotal of the session cart
@@ -62,7 +62,7 @@ if (isset($_SESSION['cart'])) {
             'id' => $item['id'],
             'nama' => $item['nama'],
             'harga' => $item['harga'],
-            'qty' => $item['qty'],
+            'diskon' => $item['diskon'],
             'total' => $item['total']
         );
     }

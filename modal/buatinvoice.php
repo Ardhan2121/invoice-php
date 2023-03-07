@@ -43,8 +43,11 @@
                     <input type="text" class="form-control" id="inputHargaProduk" name="harga_Produk" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="inputQtyProduk">QTY Produk</label>
-                    <input type="number" class="form-control" id="inputQtyProduk" value="1" min="1" name="qty_Produk">
+                    <label for="diskonProduk">Diskon Produk</label>
+                    <div class="input-group">
+                        <input class="form-control" type="number" id="diskonProduk" value="0" min="0">
+                        <span class="input-group-text">%</span>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
