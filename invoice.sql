@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.5.5-10.4.27-MariaDB)
-# Date: 2023-03-08 10:22:46
+# Date: 2023-03-08 11:53:54
 # Generator: MySQL-Front 6.0  (Build 2.20)
 
 
@@ -72,17 +72,18 @@ INSERT INTO `detail_invoice` VALUES (10,2,0,350000,'350000'),(6,3,0,40000,'40000
 
 DROP TABLE IF EXISTS `karyawan`;
 CREATE TABLE `karyawan` (
-  `id_karyawan` int(11) NOT NULL AUTO_INCREMENT,
+  `Username` varchar(30) NOT NULL DEFAULT '',
   `Nama_Karyawan` varchar(255) DEFAULT NULL,
-  `Email_Karyawan` varchar(255) DEFAULT NULL,
-  `NoTelp_Karyawan` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id_karyawan`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `Password` text DEFAULT NULL,
+  `Hak_Akses` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Username`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 #
 # Data for table "karyawan"
 #
 
+INSERT INTO `karyawan` VALUES ('ardhan','ardhan','e10adc3949ba59abbe56e057f20f883e','admin'),('fadli','fadli','e10adc3949ba59abbe56e057f20f883e','admin');
 
 #
 # Structure for table "logn"
