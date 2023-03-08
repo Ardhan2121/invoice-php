@@ -21,10 +21,10 @@ if ($conn->connect_error) {
 }
 
 // Ambil data dari session cart
-$cart_items = isset($_SESSION['cart']) ? $_SESSION['cart'] : array();
+$cart_items = isset($_SESSION['cart']) ? $_SESSION['cart'] : array(); 
 
 if (isset($subtotal)) {
-    if (!isset($jatuhtempo)) {
+    if ($jatuhtempo == '') {
         $sql = "INSERT INTO invoice (ID_Invoice,ID_Pelanggan,Tanggal_Invoice,Subtotal,Pajak,Diskon,Total) VALUES ('$id_invoice', '$id_pelanggan', '$tanggal', '$subtotal', '$pajak', '$diskon', '$total')";
         if ($conn->query($sql) !== TRUE) {
             die("Error: " . $sql . "<br>" . $conn->error);

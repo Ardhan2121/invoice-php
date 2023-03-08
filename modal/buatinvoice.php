@@ -1,4 +1,5 @@
-!-- modal pilih pelanggan -->
+<!-- modal pilih pelanggan -->
+<form action="" id="formbarang">
 <div class="modal fade" id="modalTambahProduk" tabindex="-1" role="dialog" aria-labelledby="modalTambahProdukLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -59,3 +60,4 @@
         </div>
     </div>
 </div>
+</form>

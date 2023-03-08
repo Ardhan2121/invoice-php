@@ -75,10 +75,15 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     #billship {
       background: #0083bb;
       color: #fff;
+
     }
 
     #billship td {
       width: 33%;
+    }
+
+    #items {
+      border: 2px solid hsl(198, 100%, 89%);
     }
 
     #items th {
@@ -88,7 +93,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
     }
 
     #items td {
-      border-bottom: 2px solid hsl(198, 100%, 89%);
+      border-bottom: 2px solid hsl(198, 100%, 93%);
     }
 
     .idesc {

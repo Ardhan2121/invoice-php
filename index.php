@@ -726,12 +726,12 @@ $_SESSION['hal'] = "Dashboard";
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-4">
+          <div class="col-lg-4 col-sm-6">
             <div class="widget-stat card ">
               <div class="card-body  p-4">
                 <div class="media">
-                  <span class="me-3 bg-danger">
-                    <i class="flaticon-381-calendar-1 text-white"></i>
+                  <span class="me-3 bgl-danger text-danger">
+                    <i class="flaticon-381-calendar-1"></i>
                   </span>
                   <div class="media-body text-end">
                     <p class="mb-1">Total invoice</p>
@@ -743,11 +743,11 @@ $_SESSION['hal'] = "Dashboard";
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4 col-sm-6">
             <div class="widget-stat card">
               <div class="card-body p-4">
                 <div class="media">
-                  <span class="me-3 bg-success">
+                  <span class="me-3 bgl-success texts">
                     <svg class="text-white" id="icon-revenue" xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                       viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                       stroke-linejoin="round" class="feather feather-dollar-sign">
@@ -765,11 +765,11 @@ $_SESSION['hal'] = "Dashboard";
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-4 col-sm-6">
             <div class="widget-stat card">
               <div class="card-body  p-4">
                 <div class="media">
-                  <span class="me-3 bg-primary text-white">
+                  <span class="me-3 bgl-primary text-primary">
                     <i class="la la-user"></i>
                   </span>
                   <div class="media-body text-end">

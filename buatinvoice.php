@@ -712,8 +712,7 @@ $_SESSION['hal'] = 'Invoice';
             <div class="card mt-3">
               <div class="card-header"> Invoice <strong>
                   <?php echo $_SESSION['tanggalInvoice']; ?>
-                </strong> <span class="float-end">
-                  <strong>Status:</strong> Pending</span> </div>
+              </div>
               <div class="card-body">
                 <div class="row mb-5">
                   <div class="col-md-6">
@@ -775,7 +774,7 @@ $_SESSION['hal'] = 'Invoice';
                         <tr>
                           <td class="left"><strong>Ppn</strong></td>
                           <td class="text-end input-group">
-                            <input class="form-control" type="number" id="pajak" value="0" min="0">
+                            <input class="form-control" type="number" id="pajak" value="10" min="0">
                             <span class="input-group-text">%</span>
                           </td>
                         </tr>
@@ -1132,6 +1131,8 @@ $_SESSION['hal'] = 'Invoice';
           diskon: diskonProduk,
           total: total
         };
+
+        $("#formbarang").trigger("reset");
 
         // Send the product data to PHP API using AJAX
         $.ajax({
