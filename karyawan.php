@@ -3,8 +3,8 @@
 
 <?php
 session_start();
-$_SESSION['hal'] ='Karyawan';
 include("partials/logstate.php");
+$_SESSION['hal'] ='Karyawan';
 ?>
 
 <head>
@@ -21,7 +21,7 @@ include("partials/logstate.php");
   <meta name="format-detection" content="telephone=no" />
 
   <!-- PAGE TITLE HERE -->
-  <title>Karyawan</title>
+  <title>Admin Dashboard</title>
 
   <!-- FAVICONS ICON -->
 
@@ -40,12 +40,12 @@ include("partials/logstate.php");
   <!--*******************
         Preloader start
     ********************-->
-  <div id="preloader">
+  <!-- <div id="preloader">
     <div class="lds-ripple">
       <div></div>
       <div></div>
     </div>
-  </div>
+  </div> -->
   <!--*******************
         Preloader end
     ********************-->
@@ -675,17 +675,6 @@ include("partials/logstate.php");
     <!--**********************************
             Header start
         ***********************************-->
-        <div class="header border-bottom">
-            <div class="header-content">
-                <nav class="navbar navbar-expand">
-                    <div class="collapse navbar-collapse justify-content-between">
-                        <div class="header-left">
-							<div class="dashboard_bar">
-                                Karyawan
-                            </div>
-                        </div>
-                        
-                    </div>
     <?php include 'partials/header.php'; ?>
 
     <!--**********************************
@@ -709,7 +698,7 @@ include("partials/logstate.php");
         <div class="card">
           <div class="card-header">
             <h5>Daftar Karyawan</h5>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahPelanggan">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahKaryawan">
               Tambah Karyawan
             </button>
           </div>
@@ -717,9 +706,8 @@ include("partials/logstate.php");
             <div class="table-responsive p-0">
               <table class="display w-100" id="tabel">
                 <thead>
-                  <th>#</th>
+                <th>Nama Karyawan</th>
                   <th>Username</th>
-                  <th>Nama</th>
                   <th>Hak Akses</th>
                   <th>Aksi</th>
                 </thead>
@@ -731,8 +719,6 @@ include("partials/logstate.php");
         </div>
       </div>
     </div>
-
-    
     <!--**********************************
             Content body end
         ***********************************-->
@@ -740,7 +726,11 @@ include("partials/logstate.php");
     <!--**********************************
             Footer start
         ***********************************-->
-      <?php include "partials/footer.php"; ?>
+    <div class="footer">
+      <div class="copyright">
+        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">DexignLab</a> 2021</p>
+      </div>
+    </div>
     <!--**********************************
             Footer end
         ***********************************-->
@@ -765,7 +755,7 @@ include("partials/logstate.php");
   <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
-  
+  <script src="js/demo.js"></script>
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
@@ -793,22 +783,20 @@ include("partials/logstate.php");
           previous: '<i class="fa fa-angle-double-left" aria-hidden="true"></i>',
         }
       },
-      ajax: "controller/pelanggan/listpelanggan.php",
+      ajax: "controller/karyawan/listkaryawan.php",
       columns: [
-        { "data": "ID_Pelanggan" },
-        { "data": "Nama_Pelanggan" },
-        { "data": "Email_Pelanggan" },
-        { "data": "Alamat_Pelanggan" },
-        { "data": "NoTelp_Pelanggan" },
+        { "data": "Nama_Karyawan" },
+        { "data": "Username" },
+        { "data": "Hak_Akses" },
         {
           data: null,
           render: function (data, type, row) {
-            // Tambahkan tombol Edit
-            var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Pelanggan + '" data-nama="' + row.Nama_Pelanggan + '" data-email="' + row.Email_Pelanggan + '" data-telepon="' + row.NoTelp_Pelanggan + '" data-alamat="' + row.Alamat_Pelanggan + '">Edit</button>';
+            // // Tambahkan tombol Edit
+            // var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Pelanggan + '" data-nama="' + row.Nama_Pelanggan + '" data-email="' + row.Email_Pelanggan + '" data-telepon="' + row.NoTelp_Pelanggan + '" data-alamat="' + row.Alamat_Pelanggan + '">Edit</button>';
             // Tambahkan tombol Delete
-            var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-id="' + row.ID_Pelanggan + '">Delete</button>';
-            // Gabungkan tombol Edit dan Delete
-            return editButton + ' ' + deleteButton;
+            var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-username="' + row.Username + '">Delete</button>';
+            
+            return deleteButton;
           }
         }
 
@@ -817,30 +805,29 @@ include("partials/logstate.php");
 
     $(document).ready(function () {
       // Saat form submit, kirim data ke API PHP dengan AJAX
-      $('#form-tambah-pelanggan').submit(function (event) {
+      $('#form-tambah-karyawan').submit(function (event) {
         // Mencegah form submit secara default
         event.preventDefault();
 
         // Ambil data dari form
         var nama = $('#nama').val();
-        var email = $('#email').val();
-        var alamat = $('#alamat').val();
-        var telepon = $('#telepon').val();
+        var username = $('#username').val();
+        var password = $('#password').val();
+        var hakakses = $('#hakakses').niceSelect().val();
 
         // Buat object data yang akan dikirim ke API
         var data = {
           'nama': nama,
-          'email': email,
-          'alamat': alamat,
-          'telepon': telepon
+          'username': username,
+          'password': password,
+          'hakakses': hakakses
         };
 
         // Kirim data ke API dengan AJAX
         $.ajax({
           type: 'POST',
-          url: 'controller/pelanggan/tambahpelanggan.php',
+          url: 'controller/karyawan/tambahkaryawan.php',
           data: data,
-          dataType: 'json',
           success: function (response) {
             // Tampilkan pesan berhasil atau gagal
             if (response.status == 'success') {
@@ -851,9 +838,9 @@ include("partials/logstate.php");
               })
               table.ajax.reload();
               // Reset nilai form
-              $('#form-tambah-pelanggan')[0].reset();
+              $('#form-tambah-karyawan')[0].reset();
               // Tutup modal
-              $('#modalTambahPelanggan').modal('hide');
+              $('#modalTambahKaryawan').modal('hide');
             } else {
               Swal.fire({
                 icon: 'error',
@@ -871,7 +858,8 @@ include("partials/logstate.php");
 
       $('#tabel').on('click', '.btn-delete', function () {
         // Ambil data dari tombol Delete
-        var id = $(this).data('id');
+        var username = $(this).data('username');
+        console.log(username);
         // Tampilkan konfirmasi Delete
         Swal.fire({
           title: 'Anda yakin?',
@@ -885,9 +873,9 @@ include("partials/logstate.php");
         }).then((result) => {
           if (result.isConfirmed) {
             $.ajax({
-              url: 'controller/pelanggan/deletepelanggan.php',
+              url: 'controller/karyawan/deletekaryawan.php',
               method: 'POST',
-              data: { id: id },
+              data: { username: username },
               dataType: 'json',
               success: function (response) {
                 // Cek apakah status response adalah success
@@ -916,76 +904,72 @@ include("partials/logstate.php");
         })
       });
 
-      // Tambahkan event click pada tombol edit
-      $('#tabel').on('click', '.btn-edit', function () {
-        // Ambil data dari row tabel yang diklik
-        var id = $(this).data('id');
-        var nama = $(this).data('nama');
-        var email = $(this).data('email');
-        var alamat = $(this).data('alamat');
-        var telepon = $(this).data('telepon');
+      // // Tambahkan event click pada tombol edit
+      // $('#tabel').on('click', '.btn-edit', function () {
+      //   // Ambil data dari row tabel yang diklik
+      //   var nama = $(this).data('nama');
+      //   var username = $(this).data('username');
+      //   var password = $(this).data('password');
+      //   var hakakses = $(this).data('hakakses');
 
-        // Set value form pada modal edit pelanggan
-        $('#editId').val(id);
-        $('#editNama').val(nama);
-        $('#editEmail').val(email);
-        $('#editAlamat').val(alamat);
-        $('#editTelepon').val(telepon);
+      //   // Set value form pada modal edit pelanggan
+      //   $('#editNama').val(nama);
+      //   $('#editUsername').val(username);
+      //   $('#editPassword').val(password);
+      //   $('#editHakakses').val(hakakses);
 
-        // Ubah ID modal edit pelanggan sesuai dengan ID pelanggan yang diedit
-        $('#editPelangganModal').attr('id', 'editPelangganModal-' + id);
+      //   // Ubah ID modal edit pelanggan sesuai dengan ID pelanggan yang diedit
+      //   $('#editKaryawanModal').attr('username', 'editKaryawanModal-' + username);
 
-        // Tampilkan modal edit pelanggan
-        $('#editPelangganModal-' + id).modal('show');
-      });
+      //   // Tampilkan modal edit pelanggan
+      //   $('#editKaryawanModal-' + username).modal('show');
+      // });
 
-      //ketika form disubmit
-      $(document).on('submit', '#formEditPelanggan', function (e) {
-        e.preventDefault();
+      // //ketika form disubmit
+      // $(document).on('submit', '#formEditKaryawan', function (e) {
+      //   e.preventDefault();
 
-        // Ambil data dari form
-        var idPelanggan = $('#editId').val();
-        var namaPelanggan = $('#editNama').val();
-        var emailPelanggan = $('#editEmail').val();
-        var alamatPelanggan = $('#editAlamat').val();
-        var teleponPelanggan = $('#editTelepon').val();
+      //   // Ambil data dari form
+      //   var namaKaryawan = $('#editNama').val();
+      //   var usernameKaryawan = $('#editUsername').val();
+      //   var passwordKaryawan = $('#editPassword').val();
+      //   var hakaksesKaryawan = $('#editHakakses').val();
 
-        // Buat objek data untuk dikirim ke server
-        var data = {
-          id: idPelanggan,
-          nama: namaPelanggan,
-          email: emailPelanggan,
-          telepon: teleponPelanggan,
-          alamat: alamatPelanggan
-        };
+      //   // Buat objek data untuk dikirim ke server
+      //   var data = {
+      //     nama: namaKaryawan,
+      //     username: usernameKaryawan,
+      //     password: passwordKaryawan,
+      //     hakakses: hakaksesKaryawan
+      //   };
 
-        // Kirim request ke API menggunakan AJAX
-        $.ajax({
-          url: 'controller/pelanggan/editpelanggan.php',
-          type: 'POST',
-          data: data,
-          success: function (response) {
-            // Tampilkan pesan sukses
-            Swal.fire({
-              icon: 'success',
-              title: response.status,
-              text: response.message,
-            })
-            // Refresh data pada tabel
-            $('#tabel').DataTable().ajax.reload();
+      //   // Kirim request ke API menggunakan AJAX
+      //   $.ajax({
+      //     url: 'controller/karyawan/editkaryawan.php',
+      //     type: 'POST',
+      //     data: data,
+      //     success: function (response) {
+      //       // Tampilkan pesan sukses
+      //       Swal.fire({
+      //         icon: 'success',
+      //         title: response.status,
+      //         text: response.message,
+      //       })
+      //       // Refresh data pada tabel
+      //       $('#tabel').DataTable().ajax.reload();
 
-            // Tutup modal edit pelanggan
-            $('#modal-edit-pelanggan').modal('hide');
-          },
-          error: function (xhr, status, error) {
-            Swal.fire({
-              icon: 'error',
-              title: status,
-              text: error,
-            })
-          }
-        });
-      });
+      //       // Tutup modal edit pelanggan
+      //       $('#modal-edit-karyawan').modal('hide');
+      //     },
+      //     error: function (xhr, status, error) {
+      //       Swal.fire({
+      //         icon: 'error',
+      //         title: status,
+      //         text: error,
+      //       })
+      //     }
+      //   });
+      // });
 
 
     });
