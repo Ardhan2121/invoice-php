@@ -108,6 +108,8 @@ if(isset($_POST["masuk"])){
 <script src="vendor/global/global.min.js"></script>
 <script src="js/custom.min.js"></script>
 <script src="js/dlabnav-init.js"></script>
+<script src="js/demo.js"></script>
+
 <script src="js/styleSwitcher.js"></script>
 <script src="vendor/toastr/js/toastr.min.js"></script>
     <script>

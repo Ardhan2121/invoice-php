@@ -767,6 +767,8 @@ $_SESSION['hal'] = 'Invoice';
   <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
+<script src="js/demo.js"></script>
+
   
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
@@ -819,7 +821,7 @@ $_SESSION['hal'] = 'Invoice';
             render: function (data) {
               // Mengambil ID dari kolom pertama
               var id = data['ID_Invoice'];
-              return '<a class="btn btn-primary" href="detailinvoice.php?id=' + id + '">Detail</button>';
+              return '<a class="btn btn-primary" target="_blank" href="detailinvoicev2.php?id=' + id + '">Detail</button>';
             }
           }
         ]

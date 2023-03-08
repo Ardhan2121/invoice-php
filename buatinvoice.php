@@ -843,6 +843,8 @@ $_SESSION['hal'] = 'Invoice';
   <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
+<script src="js/demo.js"></script>
+
 
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
@@ -1066,7 +1068,7 @@ $_SESSION['hal'] = 'Invoice';
               cancelButtonText: "G"
             }).then((result) => {
               if (result.isConfirmed) {
-                var url = "detailinvoice.php?id=" + response;
+                var url = "detailinvoicev2.php?id=" + response;
                 window.open(url, "_blank");
                 window.location.href = "invoice.php";
               }

@@ -4,7 +4,7 @@
 <?php
 session_start();
 include("partials/logstate.php");
-$_SESSION['hal'] ='Karyawan';
+$_SESSION['hal'] = 'Karyawan';
 ?>
 
 <head>
@@ -706,7 +706,7 @@ $_SESSION['hal'] ='Karyawan';
             <div class="table-responsive p-0">
               <table class="display w-100" id="tabel">
                 <thead>
-                <th>Nama Karyawan</th>
+                  <th>Nama Karyawan</th>
                   <th>Username</th>
                   <th>Hak Akses</th>
                   <th>Aksi</th>
@@ -795,7 +795,7 @@ $_SESSION['hal'] ='Karyawan';
             // var editButton = '<button type="button" class="btn light btn-warning btn-edit" data-id="' + row.ID_Pelanggan + '" data-nama="' + row.Nama_Pelanggan + '" data-email="' + row.Email_Pelanggan + '" data-telepon="' + row.NoTelp_Pelanggan + '" data-alamat="' + row.Alamat_Pelanggan + '">Edit</button>';
             // Tambahkan tombol Delete
             var deleteButton = '<button type="button" class="btn btn-danger btn-delete" data-username="' + row.Username + '">Delete</button>';
-            
+
             return deleteButton;
           }
         }
