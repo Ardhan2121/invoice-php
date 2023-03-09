@@ -53,12 +53,12 @@ $_SESSION['hal'] = 'Invoice';
   <!--*******************
         Preloader start
     ********************-->
-  <!-- <div id="preloader">
+  <div id="preloader">
     <div class="lds-ripple">
       <div></div>
       <div></div>
     </div>
-  </div> -->
+  </div>
   <!--*******************
         Preloader end
     ********************-->
@@ -772,8 +772,6 @@ $_SESSION['hal'] = 'Invoice';
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
   <script src="js/demo.js"></script>
-
-
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>

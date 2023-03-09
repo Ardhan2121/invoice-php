@@ -1,5 +1,4 @@
 <!-- Modal Tambah Pelanggan -->
-<?php session_start(); ?>
 <div class="modal fade" id="modalEditProfile" tabindex="-1" role="dialog" aria-labelledby="modalEditProfileLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
