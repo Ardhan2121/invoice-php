@@ -6,16 +6,30 @@ error_reporting(0);
 if (isset($_POST['masuk'])) {
     $username = $_POST['username'];
     $password = md5($_POST['password']);
-    $sql = mysqli_query($conn, "SELECT * FROM logn WHERE username='$username' AND password='$password'");
-    if (mysqli_num_rows($sql) > 0) {
+
+    // Prepare the statement
+    $stmt = $conn->prepare("SELECT * FROM karyawan WHERE Username=? AND Password=?");
+    $stmt->bind_param("ss", $username, $password);
+
+    // Execute the statement
+    $stmt->execute();
+
+    // Check if there's a match
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
         $_SESSION["login"] = false;
+        // Set session variables
+        $row = $result->fetch_assoc();
+        $_SESSION["username"] = $row["Username"];
+        $_SESSION["nama"] = $row["Nama_Karyawan"];
+
         sleep(3);
         header("location:index.php");
     } else {
         $eror = true;
     }
-
 }
+
 
 ?>
 

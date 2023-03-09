@@ -34,6 +34,9 @@ $_SESSION['hal'] = 'Karyawan';
   <link rel="shortcut icon" type="image/png" href="images/favicon.png" />
   <link href="vendor/jquery-nice-select/css/nice-select.css" rel="stylesheet" />
   <link href="css/style.css" rel="stylesheet" />
+
+  <!-- Toastr -->
+  <link rel="stylesheet" href="vendor/toastr/css/toastr.min.css">
 </head>
 
 <body>
@@ -728,7 +731,8 @@ $_SESSION['hal'] = 'Karyawan';
         ***********************************-->
     <div class="footer">
       <div class="copyright">
-        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">DexignLab</a> 2021</p>
+        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">XI RPL - SMK
+            MEDIA INFORMATIKA</a> 2021</p>
       </div>
     </div>
     <!--**********************************
@@ -767,6 +771,10 @@ $_SESSION['hal'] = 'Karyawan';
   <!-- sweetalert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/plugins-init/sweetalert.init.js"></script>
+
+  <script src="vendor/toastr/js/toastr.min.js"></script>
+
+
 
   <script>
     $(document).ready(function () {
@@ -903,78 +911,97 @@ $_SESSION['hal'] = 'Karyawan';
           }
         })
       });
+    });
 
-      // // Tambahkan event click pada tombol edit
-      // $('#tabel').on('click', '.btn-edit', function () {
-      //   // Ambil data dari row tabel yang diklik
-      //   var nama = $(this).data('nama');
-      //   var username = $(this).data('username');
-      //   var password = $(this).data('password');
-      //   var hakakses = $(this).data('hakakses');
+    $(document).ready(function () {
+      $('#form-edit-profile').submit(function (e) {
+        e.preventDefault(); // prevent the default form submit
 
-      //   // Set value form pada modal edit pelanggan
-      //   $('#editNama').val(nama);
-      //   $('#editUsername').val(username);
-      //   $('#editPassword').val(password);
-      //   $('#editHakakses').val(hakakses);
+        // get the form data
+        var formData = {
+          'nama': $('#nama-profil').val(),
+          'password': $('#password').val(),
+          'newpassword': $('#newpassword').val()
+        };
 
-      //   // Ubah ID modal edit pelanggan sesuai dengan ID pelanggan yang diedit
-      //   $('#editKaryawanModal').attr('username', 'editKaryawanModal-' + username);
+        if (formData.newpassword.length < 6) {
+          event.preventDefault();
+          toastr.error("Password Tidak boleh Kurang dari 6 Karakter", "WRONG !", {
+            positionClass: "toast-top-right",
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+          })
+        }
 
-      //   // Tampilkan modal edit pelanggan
-      //   $('#editKaryawanModal-' + username).modal('show');
-      // });
-
-      // //ketika form disubmit
-      // $(document).on('submit', '#formEditKaryawan', function (e) {
-      //   e.preventDefault();
-
-      //   // Ambil data dari form
-      //   var namaKaryawan = $('#editNama').val();
-      //   var usernameKaryawan = $('#editUsername').val();
-      //   var passwordKaryawan = $('#editPassword').val();
-      //   var hakaksesKaryawan = $('#editHakakses').val();
-
-      //   // Buat objek data untuk dikirim ke server
-      //   var data = {
-      //     nama: namaKaryawan,
-      //     username: usernameKaryawan,
-      //     password: passwordKaryawan,
-      //     hakakses: hakaksesKaryawan
-      //   };
-
-      //   // Kirim request ke API menggunakan AJAX
-      //   $.ajax({
-      //     url: 'controller/karyawan/editkaryawan.php',
-      //     type: 'POST',
-      //     data: data,
-      //     success: function (response) {
-      //       // Tampilkan pesan sukses
-      //       Swal.fire({
-      //         icon: 'success',
-      //         title: response.status,
-      //         text: response.message,
-      //       })
-      //       // Refresh data pada tabel
-      //       $('#tabel').DataTable().ajax.reload();
-
-      //       // Tutup modal edit pelanggan
-      //       $('#modal-edit-karyawan').modal('hide');
-      //     },
-      //     error: function (xhr, status, error) {
-      //       Swal.fire({
-      //         icon: 'error',
-      //         title: status,
-      //         text: error,
-      //       })
-      //     }
-      //   });
-      // });
-
-
+        else {
+          // send the form data to the server
+          $.ajax({
+            url: "controller/editprofile.php",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+              toastr.success(response, "Success", {
+                positionClass: "toast-top-right",
+                timeOut: 5e3,
+                closeButton: !0,
+                debug: !1,
+                newestOnTop: !0,
+                progressBar: !0,
+                preventDuplicates: !0,
+                onclick: null,
+                showDuration: "300",
+                hideDuration: "1000",
+                extendedTimeOut: "1000",
+                showEasing: "swing",
+                hideEasing: "linear",
+                showMethod: "fadeIn",
+                hideMethod: "fadeOut",
+                tapToDismiss: !1
+              });
+              $('#modalEditProfile').modal('hide');
+            },
+            error: function (xhr, status, error) {
+              console.log("ini error");
+              toastr.error(xhr.responseText, "WRONG !", {
+                positionClass: "toast-top-right",
+                timeOut: 5e3,
+                closeButton: !0,
+                debug: !1,
+                newestOnTop: !0,
+                progressBar: !0,
+                preventDuplicates: !0,
+                onclick: null,
+                showDuration: "300",
+                hideDuration: "1000",
+                extendedTimeOut: "1000",
+                showEasing: "swing",
+                hideEasing: "linear",
+                showMethod: "fadeIn",
+                hideMethod: "fadeOut",
+                tapToDismiss: !1
+              })
+            }
+          });
+        }
+      });
     });
   </script>
   <?php include 'modal/karyawan.php'; ?>
+  <?php include 'modal/editprofile.php'; ?>
+
 
 </body>
 

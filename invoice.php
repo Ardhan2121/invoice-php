@@ -44,6 +44,9 @@ $_SESSION['hal'] = 'Invoice';
   <!-- Toastr -->
   <link rel="stylesheet" href="vendor/toastr/css/toastr.min.css">
 
+  <!-- Toastr -->
+  <link rel="stylesheet" href="vendor/toastr/css/toastr.min.css">
+
 </head>
 
 <body>
@@ -740,7 +743,8 @@ $_SESSION['hal'] = 'Invoice';
         ***********************************-->
     <div class="footer">
       <div class="copyright">
-        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">DexignLab</a> 2021</p>
+        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">XI RPL - SMK
+            MEDIA INFORMATIKA</a> 2021</p>
       </div>
     </div>
     <!--**********************************
@@ -767,9 +771,9 @@ $_SESSION['hal'] = 'Invoice';
   <script src="vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>
   <script src="js/custom.min.js"></script>
   <script src="js/dlabnav-init.js"></script>
-<script src="js/demo.js"></script>
+  <script src="js/demo.js"></script>
 
-  
+
   <script src="js/styleSwitcher.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
 "></script>
@@ -791,6 +795,8 @@ $_SESSION['hal'] = 'Invoice';
     src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
 
   <script src="vendor/toastr/js/toastr.min.js"></script>
+
+
 
   <script>
     $(document).ready(function () {
@@ -966,8 +972,96 @@ $_SESSION['hal'] = 'Invoice';
       });
     });
 
+    $(document).ready(function () {
+      $('#form-edit-profile').submit(function (e) {
+        e.preventDefault(); // prevent the default form submit
+
+        // get the form data
+        var formData = {
+          'nama': $('#nama-profil').val(),
+          'password': $('#password').val(),
+          'newpassword': $('#newpassword').val()
+        };
+
+        if (formData.newpassword.length < 6) {
+          event.preventDefault();
+          toastr.error("Password Tidak boleh Kurang dari 6 Karakter", "WRONG !", {
+            positionClass: "toast-top-right",
+            timeOut: 5e3,
+            closeButton: !0,
+            debug: !1,
+            newestOnTop: !0,
+            progressBar: !0,
+            preventDuplicates: !0,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+            tapToDismiss: !1
+          })
+        }
+
+        else {
+          // send the form data to the server
+          $.ajax({
+            url: "controller/editprofile.php",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+              toastr.success(response, "Success", {
+                positionClass: "toast-top-right",
+                timeOut: 5e3,
+                closeButton: !0,
+                debug: !1,
+                newestOnTop: !0,
+                progressBar: !0,
+                preventDuplicates: !0,
+                onclick: null,
+                showDuration: "300",
+                hideDuration: "1000",
+                extendedTimeOut: "1000",
+                showEasing: "swing",
+                hideEasing: "linear",
+                showMethod: "fadeIn",
+                hideMethod: "fadeOut",
+                tapToDismiss: !1
+              });
+              $('#modalEditProfile').modal('hide');
+            },
+            error: function (xhr, status, error) {
+              console.log("ini error");
+              toastr.error(xhr.responseText, "WRONG !", {
+                positionClass: "toast-top-right",
+                timeOut: 5e3,
+                closeButton: !0,
+                debug: !1,
+                newestOnTop: !0,
+                progressBar: !0,
+                preventDuplicates: !0,
+                onclick: null,
+                showDuration: "300",
+                hideDuration: "1000",
+                extendedTimeOut: "1000",
+                showEasing: "swing",
+                hideEasing: "linear",
+                showMethod: "fadeIn",
+                hideMethod: "fadeOut",
+                tapToDismiss: !1
+              })
+            }
+          });
+        }
+      });
+    });
+
   </script>
   <?php include 'modal/invoice.php'; ?>
+  <?php include 'modal/editprofile.php'; ?>
+
 
 </body>
 

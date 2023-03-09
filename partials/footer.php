@@ -1,5 +1,6 @@
 <div class="footer">
       <div class="copyright">
-        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">SSP</a> 2023</p>
+        <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">XI RPL - SMK
+          MEDIA INFORMATIKA</a> 2023</p>
       </div>
 </div>

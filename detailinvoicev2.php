@@ -78,13 +78,13 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
           <div class="tm_invoice_info tm_mb20">
             <div class="tm_invoice_info_list">
               <p class="tm_invoice_date tm_m0">
-                Date: <b class="tm_primary_color">
+                Tanggal : <b class="tm_primary_color">
                   <?php echo $invoice['Tanggal_Invoice']; ?>
                 </b><br>
-                Jatuh Tempo: <b class="tm_primary_color">
+                Jatuh Tempo : <b class="tm_primary_color">
                   <?php echo $invoice['Tanggal_JatuhTempo']; ?>
                 </b><br>
-                Invoice No: <b class="tm_primary_color">
+                Nomor Invoice : <b class="tm_primary_color">
                   <?php echo $invoice['ID_Invoice']; ?>
                 </b>
               </p>
@@ -93,7 +93,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
           <div class="tm_invoice_head tm_mb10">
             <div class="tm_invoice_left">
               <p class="tm_mb2">
-                <b class="tm_primary_color">Invoice To:</b>
+                <b class="tm_primary_color">Invoice Untuk :</b>
               </p>
               <p>
                 <?php echo $invoice['Nama_Pelanggan']; ?> <br />
@@ -103,12 +103,12 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
               </p>
             </div>
             <div class="tm_invoice_right">
-              <p class="tm_mb2"><b class="tm_primary_color">Pay To:</b></p>
+              <p class="tm_mb2"><b class="tm_primary_color">Dibuat Oleh :</b></p>
               <p>
-                Laralink Ltd <br />
-                86-90 Paul Street, London<br />
-                England EC2A 4NE <br />
-                demo@gmail.com
+                Setia Sejahtera Perkasa<br />
+                Komplek Pondok Jurang Mangu Indah<br />
+                Jl. Dahlia Raya No.09, Jurang Manggu Timur. Kec. Pd. Aren<br />
+                setiasejahtera_id@gmail.com
               </p>
             </div>
           </div>
@@ -157,10 +157,10 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
             <div class="tm_invoice_footer">
               <div class="tm_left_footer">
                 <p class="tm_mb2">
-                  <b class="tm_primary_color">Payment info:</b>
+                  <b class="tm_primary_color">Info Pembayaran :</b>
                 </p>
                 <p class="tm_m0">
-                  Credit Card - 236***********928 <br />Amount: $1732
+                  Credit Card - 236***********928 <br />Amount : $1732
                 </p>
               </div>
               <div class="tm_right_footer">
@@ -200,7 +200,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                     </tr>
                     <tr class="tm_border_top">
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color">
-                        Grand Total
+                        Total Harga
                       </td>
                       <td class="tm_width_3 tm_border_top_0 tm_bold tm_f16 tm_primary_color tm_text_right">
                         <?php echo rupiah($invoice['Total']); ?>
