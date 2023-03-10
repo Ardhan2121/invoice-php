@@ -1003,12 +1003,14 @@ ul {
 .tm_invoice_in {
   position: relative;
   z-index: 100;
+  margin: 30px;
 }
 
 .tm_container {
   max-width: 880px;
   margin-left: auto;
   margin-right: auto;
+  margin-top:10px;
   position: relative;
 }
 
@@ -2421,8 +2423,13 @@ hr {
     padding: 0;
   }
 
+  body,
+  html {
+    background-color: #fff;
+  }
+
   #tm_download_section {
-    height: 276mm;
+    height: 280mm;
   }
 
   .tm_gray_bg {
