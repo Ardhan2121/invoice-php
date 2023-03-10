@@ -874,7 +874,7 @@ $_SESSION['hal'] = 'Invoice';
             alamatPelanggan: alamatPelanggan
           },
           success: function (response) {
-            alert(response);
+            
             window.location.href = 'buatinvoice.php';
           },
           error: function (xhr, status, error) {
@@ -908,7 +908,7 @@ $_SESSION['hal'] = 'Invoice';
             tanggalJatuhTempo: tanggalJatuhTempo
           },
           success: function (response) {
-            alert(response);
+            
             $('#modalPilihPelanggan').modal('show');
           },
           error: function (xhr, status, error) {

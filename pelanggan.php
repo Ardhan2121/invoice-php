@@ -934,11 +934,7 @@ $_SESSION['hal'] = 'Pelanggan';
         $('#editAlamat').val(alamat);
         $('#editTelepon').val(telepon);
 
-        // Ubah ID modal edit pelanggan sesuai dengan ID pelanggan yang diedit
-        $('#editPelangganModal').attr('id', 'editPelangganModal-' + id);
-
-        // Tampilkan modal edit pelanggan
-        $('#editPelangganModal-' + id).modal('show');
+        $('#editPelangganModal').modal('show');
       });
 
       //ketika form disubmit
@@ -977,7 +973,7 @@ $_SESSION['hal'] = 'Pelanggan';
             $('#tabel').DataTable().ajax.reload();
 
             // Tutup modal edit pelanggan
-            $('#modal-edit-pelanggan').modal('hide');
+            $('#editPelangganModal').modal('hide');
           },
           error: function (xhr, status, error) {
             Swal.fire({

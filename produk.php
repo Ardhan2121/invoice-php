@@ -939,11 +939,7 @@ include("partials/logstate.php");
         $('#editNama').val(nama);
         $('#editHarga').val(harga);
 
-        // Ubah ID modal edit produk sesuai dengan ID produk yang diedit
-        $('#editProdukModal').attr('id', 'editProdukModal-' + id);
-
-        // Tampilkan modal edit produk
-        $('#editProdukModal-' + id).modal('show');
+        $('#editProdukModal').modal('show');
       });
 
       //ketika form disubmit
@@ -978,7 +974,7 @@ include("partials/logstate.php");
             $('#tabel').DataTable().ajax.reload();
 
             // Tutup modal edit produk
-            $('#modal-edit-produk').modal('hide');
+            $('#editProdukModal').modal('hide');
           },
           error: function (xhr, status, error) {
             Swal.fire({
