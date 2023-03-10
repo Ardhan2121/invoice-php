@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <?php
+session_start();
+include 'partials/logstate.php';
 require 'controller/koneksi.php';
 if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
   $id = $_GET['id'];

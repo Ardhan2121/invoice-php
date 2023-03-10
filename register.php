@@ -1,10 +1,12 @@
 <?php
 include "controller/koneksi.php";
 if (isset($_POST["masuk"])) {
+    $nama = $_POST['nama'];
     $username = $_POST["username"];
     $password = md5($_POST["password"]);
     $paslen = $_POST['password'];
     $kon_pas = $_POST['kon_password'];
+    $hakakses = "karyawan";
 
     if (strlen($paslen) <= 5) {
         echo "<script>alert('Password harus lebih dari 6 Karakter')</script>";
@@ -24,8 +26,8 @@ if (isset($_POST["masuk"])) {
             $sama = true;
         } else {
             // Prepare the statement
-            $stmt = $conn->prepare("INSERT INTO karyawan (Username,Password) VALUES (?,?)");
-            $stmt->bind_param("ss", $username, $password);
+            $stmt = $conn->prepare("INSERT INTO karyawan (Nama_Karyawan,Username,Password,Hak_Akses) VALUES (?,?,?,?)");
+            $stmt->bind_param("ssss", $nama, $username, $password, $hakakses);
 
             // Execute the statement
             $stmt->execute();
@@ -77,20 +79,25 @@ if (isset($_POST["masuk"])) {
                                     <h4 class="text-center mb-4">Register</h4>
                                     <form action="" method="post">
                                         <div class="mb-3">
+                                            <label class="mb-1"><strong>Nama</strong></label>
+                                            <input type="text" class="form-control" name="nama"
+                                                placeholder="Nama" autocomplete="off" required>
+                                        </div>
+                                        <div class="mb-3">
                                             <label class="mb-1"><strong>Username</strong></label>
                                             <input type="text" class="form-control" name="username"
-                                                placeholder="Username" autocomplete="off">
+                                                placeholder="Username" autocomplete="off" required>
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Password</strong></label>
                                             <input type="password" class="form-control" id="input1" name="password"
-                                                placeholder="Password">
+                                                placeholder="Password" required>
 
                                         </div>
                                         <div class="mb-3">
                                             <label class="mb-1"><strong>Konfirmasi Password</strong></label>
                                             <input type="password" class="form-control" id="input2" name="kon_password"
-                                                placeholder="komfirmasip password">
+                                                placeholder="konfirmasi password" required>
 
                                         </div>
                                         <div class="row d-flex justify-content-between mt-4 mb-2">
@@ -105,8 +112,7 @@ if (isset($_POST["masuk"])) {
 
                                         </div>
                                         <div claszs="text-center">
-                                            <button type="submit" name="masuk" class="btn btn-primary btn-block">Sign
-                                                In</button>
+                                            <button type="submit" name="masuk" class="btn btn-primary btn-block">Register</button>
                                         </div>
                                     </form>
                                     <div class="new-account mt-3">
