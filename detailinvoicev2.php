@@ -137,7 +137,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                     <tbody>
                       <?php while ($detailinvoice = mysqli_fetch_array($data)) {
                         $count++;
-                        if($i != $totalhalaman){
+                        if ($i != $totalhalaman) {
                           $maxdata = 10;
                         }
                         if ($count == $maxdata)
@@ -169,7 +169,7 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                       <b class="tm_primary_color">Info Pembayaran :</b>
                     </p>
                     <p class="tm_m0">
-                      Credit Card - 236***********928 <br />Amount : $1732
+                      BRI - 0398-0100-0885-302
                     </p>
                   </div>
 
@@ -218,6 +218,9 @@ if (isset($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
                         </tr>
                       </tbody>
                     </table>
+                    <div style = "margin-top: 80px; margin-left: 100px; text-align: center;" class="tm_primary_color"><b>HADI PRIYOTOMO</b></div>
+                    <div style = "margin-top: 110px; margin-left: 100px; text-align: center;" class="tm_primary_color"><b>DIREKTUR</b></div>
+                    <br>
                     <div class="tm_shape_3 tm_accent_bg_10"></div>
                   </div>
                 <?php } ?>
