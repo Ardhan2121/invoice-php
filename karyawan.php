@@ -5,7 +5,12 @@
 session_start();
 include("partials/logstate.php");
 $_SESSION['hal'] = 'Karyawan';
+
 ?>
+<?php if($_SESSION["role"] == "admin"){
+  
+?>
+}
 
 <head>
   <meta charset="utf-8" />

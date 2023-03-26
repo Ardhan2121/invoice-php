@@ -22,18 +22,15 @@ if (isset($_POST['masuk'])) {
         $row = $result->fetch_assoc();
         $_SESSION["username"] = $row["Username"];
         $_SESSION["nama"] = $row["Nama_Karyawan"];
+        $_SESSION["role"]=$row["Hak_Akses"];
 
-        if ($row["Hak_Akses"] == "admin") {
-            $_SESSION["admin"] = true;
-            header("location:admin/index.php");
-        } else {
-            $_SESSION["admin"] = false;
-            header("location:karyawan/index.php");
-        }
+        sleep(3);
+        header("location:index.php");
     } else {
         $eror = true;
     }
 }
+
 
 
 
