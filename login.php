@@ -23,12 +23,18 @@ if (isset($_POST['masuk'])) {
         $_SESSION["username"] = $row["Username"];
         $_SESSION["nama"] = $row["Nama_Karyawan"];
 
-        sleep(3);
-        header("location:index.php");
+        if ($row["Hak_Akses"] == "admin") {
+            $_SESSION["admin"] = true;
+            header("location:admin/index.php");
+        } else {
+            $_SESSION["admin"] = false;
+            header("location:karyawan/index.php");
+        }
     } else {
         $eror = true;
     }
 }
+
 
 
 ?>
