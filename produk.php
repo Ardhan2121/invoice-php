@@ -798,6 +798,8 @@ include("partials/logstate.php");
               return formatAngka(data);
             }
           },
+          
+          <?php if($_SESSION["role"] == "admin"){ ?>
           {
             data: null,
             render: function (data, type, row) {
@@ -809,6 +811,9 @@ include("partials/logstate.php");
               return editButton + ' ' + deleteButton;
             }
           }
+          <?php } ?>
+          
+
         ],
         columnDefs: [
           {

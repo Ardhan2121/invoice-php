@@ -802,6 +802,8 @@ $_SESSION['hal'] = 'Pelanggan';
         { "data": "Email_Pelanggan" },
         { "data": "Alamat_Pelanggan" },
         { "data": "NoTelp_Pelanggan" },
+        
+        <?php if($_SESSION["role"] == "admin"){ ?>
         {
           data: null,
           render: function (data, type, row) {
@@ -813,6 +815,7 @@ $_SESSION['hal'] = 'Pelanggan';
             return editButton + ' ' + deleteButton;
           }
         }
+        <?php } ?>
 
       ]
     });

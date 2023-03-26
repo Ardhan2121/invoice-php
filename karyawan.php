@@ -7,12 +7,13 @@ include("partials/logstate.php");
 $_SESSION['hal'] = 'Karyawan';
 
 ?>
-<?php if($_SESSION["role"] == "admin"){
-  
-?>
-}
+
 
 <head>
+<?php if($_SESSION["role"] != "admin"){
+header("Location : index.php"); 
+}
+?>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="keywords" content="" />
