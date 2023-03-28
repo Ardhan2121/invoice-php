@@ -68,7 +68,7 @@ $_SESSION['hal'] = "Dashboard";
             Nav header start
         ***********************************-->
     <div class="nav-header">
-      <a href="index.html" class="brand-logo">
+      <a href="index.php" class="brand-logo">
         <svg class="logo-abbr" width="55" height="55" viewbox="0 0 55 55" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
@@ -846,7 +846,7 @@ $_SESSION['hal'] = "Dashboard";
 
   <script src="js/demo.js"></script>
   <script src="js/styleSwitcher.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
+  <script src="vendor/inputmask/dist/jquery.inputmask.min.js
 "></script>
 
   <!-- Chart ChartJS plugin files -->
@@ -858,7 +858,7 @@ $_SESSION['hal'] = "Dashboard";
   <script src="js/plugins-init/datatables.init.js"></script>
 
   <!-- sweetalert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="node_modules/sweetalert2/dist/sweetalert2.js"></script>
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
   <script src="vendor/toastr/js/toastr.min.js"></script>

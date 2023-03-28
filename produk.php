@@ -761,17 +761,16 @@ include("partials/logstate.php");
 
 
   <script src="js/styleSwitcher.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
-"></script>
+  <script src="vendor/inputmask/dist/jquery.inputmask.min.js"></script>
   <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>F
+    src="vendor/jquery-number/jquery.number.min.js"></script>F
 
   <!-- Datatable -->
   <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
   <script src="js/plugins-init/datatables.init.js"></script>
 
   <!-- sweetalert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="node_modules/sweetalert2/dist/sweetalert2.js"></script>
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
   <script src="vendor/toastr/js/toastr.min.js"></script>
@@ -799,6 +798,8 @@ include("partials/logstate.php");
               return formatAngka(data);
             }
           },
+          
+          <?php if($_SESSION["role"] == "admin"){ ?>
           {
             data: null,
             render: function (data, type, row) {
@@ -810,6 +811,9 @@ include("partials/logstate.php");
               return editButton + ' ' + deleteButton;
             }
           }
+          <?php } ?>
+          
+
         ],
         columnDefs: [
           {
