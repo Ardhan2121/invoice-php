@@ -22,7 +22,7 @@ if (isset($_POST['masuk'])) {
         $row = $result->fetch_assoc();
         $_SESSION["username"] = $row["Username"];
         $_SESSION["nama"] = $row["Nama_Karyawan"];
-
+        $_SESSION['role'] = $row["Hak_Akses"];
         sleep(3);
         header("location:index.php");
     } else {
