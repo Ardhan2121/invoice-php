@@ -765,7 +765,7 @@ $_SESSION['hal'] = 'Pelanggan';
 
 
   <script src="js/styleSwitcher.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
+  <script src="vendor/inputmask/dist/jquery.inputmask.min.js
 "></script>
 
   <!-- Datatable -->
@@ -773,7 +773,7 @@ $_SESSION['hal'] = 'Pelanggan';
   <script src="js/plugins-init/datatables.init.js"></script>
 
   <!-- sweetalert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="node_modules/sweetalert2/dist/sweetalert2.js"></script>
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
   <script src="vendor/toastr/js/toastr.min.js"></script>
@@ -802,6 +802,8 @@ $_SESSION['hal'] = 'Pelanggan';
         { "data": "Email_Pelanggan" },
         { "data": "Alamat_Pelanggan" },
         { "data": "NoTelp_Pelanggan" },
+        
+        <?php if($_SESSION["role"] == "admin"){ ?>
         {
           data: null,
           render: function (data, type, row) {
@@ -813,6 +815,7 @@ $_SESSION['hal'] = 'Pelanggan';
             return editButton + ' ' + deleteButton;
           }
         }
+        <?php } ?>
 
       ]
     });

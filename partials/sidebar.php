@@ -29,6 +29,7 @@
                 </a>
             </li>
 
+            <?php if($_SESSION["role"] == "admin"){ ?>
             <li>
                 <a class="" href="karyawan.php" aria-expanded="false">
                     <i class="fas fa-user-tie"></i>
@@ -36,6 +37,7 @@
                 </a>
             </li>
         </ul>
+        <?php } ?>
 
         <div class="copyright">
             <p><strong>Fillow Saas Admin</strong> © 2021 All Rights Reserved</p>

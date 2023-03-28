@@ -720,11 +720,11 @@ $_SESSION['hal'] = 'Invoice';
                 <div class="row mb-5">
                   <div class="col-md-6">
                     <h6>From:</h6>
-                    <div> <strong>Webz Poland</strong> </div>
-                    <div>Madalinskiego 8</div>
-                    <div>71-101 Szczecin, Poland</div>
-                    <div>Email: info@webz.com.pl</div>
-                    <div>Phone: +48 444 666 3333</div>
+                    <div> <strong>Setia Sejahtera Perkasa</strong> </div>
+                    <div>Komplek Pondok Jurang Mangu Indah</div>
+                    <div>Jl. Dahlia Raya No.09, Jurang Manggu Timur. Kec. Pd. Aren</div>
+                    <div>Email: setiasejahtera_id@gmail.com</div>
+                    <div>Phone: 0812-1884-8290</div>
                   </div>
                   <div class="col-md-6 text-end">
                     <h6>To:</h6>
@@ -850,17 +850,16 @@ $_SESSION['hal'] = 'Invoice';
 
 
   <script src="js/styleSwitcher.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js
+  <script src="vendor/inputmask/dist/jquery.inputmask.min.js
 "></script>
-  <script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/df-number-format/2.1.6/jquery.number.min.js"></script>
+  <script type="text/javascript" src="vendor/jquery-number/jquery.number.min.js"></script>
 
   <!-- Datatable -->
   <script src="vendor/datatables/js/jquery.dataTables.min.js"></script>
   <script src="js/plugins-init/datatables.init.js"></script>
 
   <!-- sweetalert -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="node_modules/sweetalert2/dist/sweetalert2.js"></script>
   <script src="js/plugins-init/sweetalert.init.js"></script>
 
   <!-- pickdate -->
