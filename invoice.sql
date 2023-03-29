@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.5.5-10.4.14-MariaDB)
-# Date: 2023-03-29 14:25:24
+# Date: 2023-03-29 15:03:38
 # Generator: MySQL-Front 6.0  (Build 2.20)
 
 
@@ -81,6 +81,7 @@ CREATE TABLE `karyawan` (
 # Data for table "karyawan"
 #
 
+INSERT INTO `karyawan` VALUES ('admin','Admin','e10adc3949ba59abbe56e057f20f883e','admin');
 
 #
 # Structure for table "pelanggan"
