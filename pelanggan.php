@@ -62,13 +62,8 @@ $_SESSION['hal'] = 'Pelanggan';
         ***********************************-->
     <div class="nav-header">
       <a href="index.html" class="brand-logo">
-        <svg class="logo-abbr" width="55" height="55" viewbox="0 0 55 55" fill="none"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M27.5 0C12.3122 0 0 12.3122 0 27.5C0 42.6878 12.3122 55 27.5 55C42.6878 55 55 42.6878 55 27.5C55 12.3122 42.6878 0 27.5 0ZM28.0092 46H19L19.0001 34.9784L19 27.5803V24.4779C19 14.3752 24.0922 10 35.3733 10V17.5571C29.8894 17.5571 28.0092 19.4663 28.0092 24.4779V27.5803H36V34.9784H28.0092V46Z"
-            fill="url(#paint0_linear)"></path>
-          <defs></defs>
-        </svg>
+      <img class="logo-abbr" width="90" src="images/logo_ssp.png">
+        </img>
         <div class="brand-title">
           <h2 class="">Fillow.</h2>
           <span class="brand-sub-title">Saas Admin Dashboard</span>
@@ -734,7 +729,7 @@ $_SESSION['hal'] = 'Pelanggan';
     <div class="footer">
       <div class="copyright">
         <p>Copyright © Designed &amp; Developed by <a href="../index.htm" target="_blank">XI RPL - SMK
-            MEDIA INFORMATIKA</a> 2021</p>
+            MEDIA INFORMATIKA</a> 2023</p>
       </div>
     </div>
     <!--**********************************
@@ -803,7 +798,6 @@ $_SESSION['hal'] = 'Pelanggan';
         { "data": "Alamat_Pelanggan" },
         { "data": "NoTelp_Pelanggan" },
         
-        <?php if($_SESSION["role"] == "admin"){ ?>
         {
           data: null,
           render: function (data, type, row) {
@@ -815,9 +809,35 @@ $_SESSION['hal'] = 'Pelanggan';
             return editButton + ' ' + deleteButton;
           }
         }
-        <?php } ?>
-
-      ]
+      ],
+      columnDefs: [
+          {
+            targets: [0], // index kolom id
+            width: '5%'
+          },
+          {
+            width: '15%',
+            targets: [1]
+          },
+          {
+            width: '15%',
+            targets: [2]
+          },
+          {
+            width: '35%',
+            targets: [3]
+          },
+          {
+            width: '20%',
+            targets: [5],
+            <?php if ($_SESSION['role'] == "admin"){
+              echo 'visible : true';
+            }
+            else {
+              echo 'visible : false';
+            }?>
+          }
+        ],
     });
 
     $(document).ready(function () {
