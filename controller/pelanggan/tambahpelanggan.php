@@ -26,7 +26,6 @@ if ($result) {
         'status' => 'success',
         'message' => 'Berhasil menambahkan data pelanggan'
     );
-    //update kode pelanggan juga
 
 } else {
     // Jika gagal, kirim response gagal

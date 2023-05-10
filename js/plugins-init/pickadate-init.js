@@ -2,6 +2,9 @@
     "use strict"
 
     //date picker classic default
-    $('.datepicker-default').pickadate();
+    $('.datepicker-default').pickadate({
+    	format: 'yyyy-mm-dd',
+    	formatSubmit : 'yyyy-mm-dd'
+    });
 
 })(jQuery);

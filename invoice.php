@@ -5,7 +5,7 @@
 session_start();
 date_default_timezone_set('Asia/Jakarta');
 include("partials/logstate.php");
-$_SESSION['hal'] = 'Invoice';
+$_SESSION['hal'] = 'Cetak Invoice';
 ?>
 
 <head>
@@ -710,7 +710,7 @@ $_SESSION['hal'] = 'Invoice';
       <div class="container-fluid">
         <div class="card">
           <div class="card-header">
-            <h5>Daftar Invoice</h5>
+            <h5>Cetak Invoice</h5>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInfoInvoice">
               Buat Invoice
             </button>

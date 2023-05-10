@@ -29,10 +29,6 @@ if (isset($_POST['masuk'])) {
         $eror = true;
     }
 }
-
-
-
-
 ?>
 
 <!DOCTYPE html>

@@ -3,41 +3,39 @@
         <ul class="metismenu" id="menu">
             <li>
                 <a class="" href="index.php" aria-expanded="false">
-                <i class="fas fa-columns"></i>
+                    <i class="fas fa-columns"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
 
-            <li>
-                <a class="" href="pelanggan.php" aria-expanded="false">
-                    <i class="fas fa-users"></i>
-                    <span class="nav-text">Pelanggan</span>
+            <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-database"></i>
+                    <span class="nav-text">Master</span>
                 </a>
+                <ul aria-expanded="false">
+                    <li><a href="pelanggan.php">Pelanggan</a></li>
+                    <li><a href="produk.php">Produk</a></li>
+                    <?php if ($_SESSION["role"] == "admin") { ?>
+                        <li><a href="karyawan.php">karyawan</a></li>
+                    <?php } ?>
+                </ul>
             </li>
 
             <li>
                 <a class="" href="invoice.php" aria-expanded="false">
                     <i class="fas fa-file-invoice"></i>
-                    <span class="nav-text">Invoice</span>
+                    <span class="nav-text">Transaksi</span>
                 </a>
             </li>
-
-            <li>
-                <a class="" href="produk.php" aria-expanded="false">
-                    <i class="fas fa-box-open"></i>
-                    <span class="nav-text">Produk</span>
+            <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="nav-text">Laporan</span>
                 </a>
-            </li>
-
-            <?php if($_SESSION["role"] == "admin"){ ?>
-            <li>
-                <a class="" href="karyawan.php" aria-expanded="false">
-                    <i class="fas fa-user-tie"></i>
-                    <span class="nav-text">Karyawan</span>
-                </a>
+                <ul aria-expanded="false">
+                    <li><a href="laporan.php">Laporan Penjualan</a></li>
+                </ul>
             </li>
         </ul>
-        <?php } ?>
 
         <div class="copyright">
             <p><strong>Fillow Saas Admin</strong> © 2021 All Rights Reserved</p>

@@ -3,9 +3,11 @@
 
     // Daterange picker
     $('.input-daterange-datepicker').daterangepicker({
+        format: 'MM/DD/YYYY',
         buttonClasses: ['btn', 'btn-sm'],
         applyClass: 'btn-danger',
-        cancelClass: 'btn-inverse'
+        cancelClass: 'btn-inverse',
+        autoApply: false
     });
     $('.input-daterange-timepicker').daterangepicker({
         timePicker: true,
@@ -19,11 +21,10 @@
     });
     $('.input-limit-datepicker').daterangepicker({
         format: 'MM/DD/YYYY',
-        minDate: '06/01/2015',
-        maxDate: '06/30/2015',
         buttonClasses: ['btn', 'btn-sm'],
         applyClass: 'btn-danger',
         cancelClass: 'btn-inverse',
+        autoApply: false,
         dateLimit: {
             days: 6
         }
